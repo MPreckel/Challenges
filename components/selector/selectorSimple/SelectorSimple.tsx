@@ -38,12 +38,12 @@ export const SelectorSimple = ({ data, value, isLoading, onSelect }: SimpleSelec
   return (
     <SCSelectorContainer ref={containerRef}>
       <SCSelectorButton isOpen={isOpen} onClick={handleToggle}>
-        {selected || "Seleccionar"}
+        {selected.toString().charAt(0).toUpperCase() + selected.toString().slice(1) || "Seleccionar"}
         <SCArrowButton $isCollapsed={isOpen}>
           <DropDownArrowIcon />
         </SCArrowButton>
       </SCSelectorButton>
-      <SCSelectorOptions isOpen={isOpen}>
+      {isOpen && <SCSelectorOptions>
         {isLoading && (
           <SCSelectorOption>
             Cargando...
@@ -58,7 +58,7 @@ export const SelectorSimple = ({ data, value, isLoading, onSelect }: SimpleSelec
             {option.label}
           </SCSelectorOption>
         ))}
-      </SCSelectorOptions>
+      </SCSelectorOptions>}
     </SCSelectorContainer>
   );
 };

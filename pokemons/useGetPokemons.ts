@@ -26,7 +26,6 @@ interface PokemonDetails {
 }
 
 export function useGetPokemons() {
-  const [pokemonsData, setPokemonsData] = useState<PokemonResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [detailedPokemons, setDetailedPokemons] = useState<PokemonDetails[]>([]);
@@ -40,8 +39,7 @@ export function useGetPokemons() {
         throw new Error('Failed to fetch Pokémon data');
       }
       const data = await response.json();
-      setPokemonsData(data);
-
+      console.log(data)
       // Fetch detailed data for each Pokémon
       const detailedData = await Promise.all(
         data.results.map(async (pokemon: any) => {

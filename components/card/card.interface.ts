@@ -1,3 +1,4 @@
 export interface CardProps {
-    imageUrl: string;
+    imageUrl: string | null;
+    pokemonName: string | null;
 }

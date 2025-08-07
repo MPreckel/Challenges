@@ -38,7 +38,7 @@ export const SelectorMultiple = ({ data, value = [], onChange }: SelectorMultipl
 
   return (
     <SCSelectorContainer ref={containerRef}>
-      <SCSelectorButton isOpen={isOpen} onClick={handleToggle}>
+      {/* <SCSelectorButton isOpen={isOpen} onClick={handleToggle}>
         {value.length > 0 ? value.map(v => data.find(d => d.value === v)?.label).join(', ') : "Seleccionar"}
         <span>▼</span>
       </SCSelectorButton>
@@ -52,7 +52,7 @@ export const SelectorMultiple = ({ data, value = [], onChange }: SelectorMultipl
             {option.label}
           </SCSelectorOption>
         ))}
-      </SCSelectorOptions>
+      </SCSelectorOptions> */}
     </SCSelectorContainer>
   );
 };

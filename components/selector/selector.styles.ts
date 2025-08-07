@@ -4,7 +4,7 @@ export const SCSelectorContainer = styled.div`
   width: 100%;
 `;
 
-export const SCSelectorButton = styled.button<{ isOpen: boolean }>`
+export const SCSelectorButton = styled.div<{ isOpen: boolean }>`
   width: 100%;
   padding: 12px;
   border: 1px solid #ddd;
@@ -31,19 +31,19 @@ export const SCSelectorButton = styled.button<{ isOpen: boolean }>`
   `}
 `;
 
-export const SCSelectorOptions = styled.ul<{ isOpen: boolean }>`
-  width: 100%;
+export const SCSelectorOptions = styled.div`
   position: absolute;
   background: white;
   border: 1px solid #ddd;
   border-radius: 8px;
   margin-top: 4px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  display: ${props => props.isOpen ? 'block' : 'none'};
-  z-index: 1000;
+  z-index: 100000000;  
+  max-height: 200px;
+  overflow-y: auto;
 `;
 
-export const SCSelectorOption = styled.li<{ isSelected?: boolean }>`
+export const SCSelectorOption = styled.div<{ isSelected?: boolean }>`
   padding: 12px;
   cursor: pointer;
   display: flex;
@@ -60,7 +60,7 @@ export const SCSelectorOption = styled.li<{ isSelected?: boolean }>`
   `}
 `;
 
-export const SCArrowButton = styled.button<{ $isCollapsed: boolean }>`
+export const SCArrowButton = styled.div<{ $isCollapsed: boolean }>`
   height: 24px;
   border: none;
   background-color: transparent;
