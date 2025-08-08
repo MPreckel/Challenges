@@ -2,17 +2,38 @@
 import { Card } from "@/components/card/Card";
 import { Selector } from "@/components/selector/Selector";
 import { useGetPokemons } from "@/pokemons/useGetPokemons";
-import { useEffect, useState } from "react";
-import { SCCardWrapper, SCMainWrapper, SCSelector, SCSelectorsWrapper } from "./test/page.styles";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { SCCardAndImageWrapper, SCCardWrapper, SCMainWrapper, SCSelector, SCSelectorsWrapper } from "./test/page.styles";
 import Image from "next/image";
 
 export default function Home() {
-  const { detailedPokemons, loading, getPokemones } = useGetPokemons();
+  const { 
+    detailedPokemons, 
+    loading, 
+    getPokemones, 
+    loadMorePokemons, 
+    hasMore 
+  } = useGetPokemons();
   const [selectedPokemon, setSelectedPokemon] = useState<string | null>(null);
+  const observer = useRef<IntersectionObserver>(null);
+
+  // Callback para el último elemento del selector
+  const lastPokemonElementRef = useCallback((node: HTMLElement | null) => {
+    if (loading) return;
+    if (observer.current) observer.current.disconnect();
+    
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        loadMorePokemons();
+      }
+    });
+    
+    if (node) observer.current.observe(node);
+  }, [loading, hasMore, loadMorePokemons]);
 
   useEffect(() => {
     getPokemones();
-  }, []);
+  }, [getPokemones]);
 
   const handlePokemonSelect = (value: string) => {
     setSelectedPokemon(value);
@@ -25,11 +46,13 @@ export default function Home() {
       <Selector
         type="simple"
         onSelect={handlePokemonSelect}
-        data={detailedPokemons.map((pokemon) => ({
+        data={detailedPokemons.map((pokemon, index) => ({
           value: pokemon.name,
           label: pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1),
+          ref: index === detailedPokemons.length - 1 ? lastPokemonElementRef : null
         }))}
         isLoading={loading}
+        hasMore={hasMore}
         />
         
         </SCSelector>
@@ -45,12 +68,12 @@ export default function Home() {
         />
         </SCSelector>
         </SCSelectorsWrapper>
-
+          <SCCardAndImageWrapper>
         <SCCardWrapper>
         <Card 
           imageUrl={detailedPokemons.find(p => p.name === selectedPokemon)?.sprites.front_default || null}
           pokemonName={selectedPokemon || null} 
-        />
+          />
         </SCCardWrapper>
         <Image
         onError={() => {console.log('Error al cargar la imagen')}} 
@@ -59,7 +82,8 @@ export default function Home() {
         width={700}
         height={700}
         />
-
+          
+        </SCCardAndImageWrapper>
     </SCMainWrapper>
   );
 }

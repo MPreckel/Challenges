@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 interface PokemonResponse {
   count: number;
@@ -29,20 +29,27 @@ export function useGetPokemons() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [detailedPokemons, setDetailedPokemons] = useState<PokemonDetails[]>([]);
+  const [nextUrl, setNextUrl] = useState<string | null>(null);
+  const [hasMore, setHasMore] = useState(true);
 
-  const getPokemones = async () => {
+  const getPokemones = useCallback(async (url?: string) => {
     try {
       setLoading(true);
       setError(null);
-      const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=18&offset=0');
+      const apiUrl = url || 'https://pokeapi.co/api/v2/pokemon?limit=18&offset=0';
+      const response = await fetch(apiUrl);
+      
       if (!response.ok) {
         throw new Error('Failed to fetch Pokémon data');
       }
-      const data = await response.json();
-      console.log(data)
+      
+      const data: PokemonResponse = await response.json();
+      setNextUrl(data.next);
+      setHasMore(data.next !== null);
+
       // Fetch detailed data for each Pokémon
       const detailedData = await Promise.all(
-        data.results.map(async (pokemon: any) => {
+        data.results.map(async (pokemon) => {
           const response = await fetch(pokemon.url);
           if (!response.ok) {
             throw new Error(`Failed to fetch details for ${pokemon.name}`);
@@ -51,18 +58,26 @@ export function useGetPokemons() {
         })
       );
 
-      setDetailedPokemons(detailedData);
+      setDetailedPokemons(prev => url ? [...prev, ...detailedData] : detailedData);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  const loadMorePokemons = useCallback(() => {
+    if (nextUrl && !loading && hasMore) {
+      getPokemones(nextUrl);
+    }
+  }, [nextUrl, loading, hasMore, getPokemones]);
 
   return {
     detailedPokemons,
     loading,
     error,
     getPokemones,
+    loadMorePokemons,
+    hasMore,
   };
 }

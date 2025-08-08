@@ -2,12 +2,20 @@ import { DropDownArrowIcon } from "@/icons/DropDownArrowIcon";
 import { Option, SimpleSelectorProps } from "../selector.interface";
 import { SCSelectorContainer, SCSelectorButton, SCSelectorOptions, SCSelectorOption, SCArrowButton } from "../selector.styles";
 import { useRef, useState, useEffect } from "react";
+import { SpinnerComponent } from "@/components/spinner/Spinner";
+import { SCWrapperSpinner } from "@/components/spinner/spinner.styles";
 
 
 
-export const SelectorSimple = ({ data, value, isLoading, onSelect }: SimpleSelectorProps) => {
+export const SelectorSimple = ({ 
+  data, 
+  value, 
+  isLoading, 
+  onSelect, 
+  hasMore 
+}: SimpleSelectorProps & { hasMore?: boolean }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState<string | number>('')
+  const [selected, setSelected] = useState<string | number>('');
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleToggle = () => {
@@ -43,22 +51,40 @@ export const SelectorSimple = ({ data, value, isLoading, onSelect }: SimpleSelec
           <DropDownArrowIcon />
         </SCArrowButton>
       </SCSelectorButton>
-      {isOpen && <SCSelectorOptions>
-        {isLoading && (
-          <SCSelectorOption>
-            Cargando...
-          </SCSelectorOption>
-        )}
-        {!isLoading && data.map((option) => (
-          <SCSelectorOption
-            key={option.value}
-            isSelected={option.value === value}
-            onClick={() => handleSelect(option)}
-          >
-            {option.label}
-          </SCSelectorOption>
-        ))}
-      </SCSelectorOptions>}
+      {isOpen && (
+        <SCSelectorOptions>
+          {isLoading && !data.length && (
+            <SCSelectorOption>
+              Cargando...
+            </SCSelectorOption>
+          )}
+          
+          {data.map((option) => (
+            <SCSelectorOption
+              key={option.value}
+              isSelected={option.value === value}
+              onClick={() => handleSelect(option)}
+              ref={option.ref || null}
+            >
+              {option.label}
+            </SCSelectorOption>
+          ))}
+          
+          {true && data.length > 0 && (
+            <SCSelectorOption>
+              <SCWrapperSpinner>
+                <SpinnerComponent size="20px" color="" />
+              </SCWrapperSpinner>
+            </SCSelectorOption>
+          )}
+          
+          {hasMore && !isLoading && data.length && (
+            <SCSelectorOption>
+              Desplázate para cargar más
+            </SCSelectorOption>
+          )}
+        </SCSelectorOptions>
+      )}
     </SCSelectorContainer>
   );
 };

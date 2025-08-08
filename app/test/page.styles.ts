@@ -24,3 +24,16 @@ export const SCCardWrapper = styled.div`
   transform: translate(-50%, -50%);
   padding: 16px;
 `;
+
+export const SCImageWrapper = styled.div`
+  width: 200px;
+  height: 200px;
+`;
+
+export const SCCardAndImageWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+`;
+
