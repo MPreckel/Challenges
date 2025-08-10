@@ -4,20 +4,23 @@ export interface Option<T extends HTMLElement = HTMLDivElement> {
   ref?: React.RefObject<T> | null;
 }
 
-export type SelectorProps = SimpleSelectorProps | MultipleSelectorProps;
-
-export interface SimpleSelectorProps {
-  type: 'simple';
+export interface BaseSelectorProps {
   data: Option[];
-  value?: string;
   isLoading?: boolean;
-  onSelect?: (value: string) => void;
   hasMore?: boolean;
+  label?: string;
 }
 
-export interface MultipleSelectorProps {
-  type: 'multiple';
-  data: Option[];
-  value?: string[];
-  onChange?: (value: string[]) => void;
+export interface SingleSelectorProps extends BaseSelectorProps {
+  type: 'simple';
+  value?: string;
+  onSelect?: (value: string) => void;
 }
+
+export interface MultipleSelectorProps extends BaseSelectorProps {
+  type: 'multiple';
+  value?: string[];
+  onSelect?: (value: string[]) => void;
+}
+
+export type SelectorProps = SingleSelectorProps | MultipleSelectorProps;

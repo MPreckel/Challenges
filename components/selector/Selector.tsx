@@ -1,11 +1,11 @@
 "use client"
 
-import { SelectorProps, SimpleSelectorProps, MultipleSelectorProps } from "./selector.interface";
+import { SelectorProps, SingleSelectorProps, MultipleSelectorProps } from "./selector.interface";
 import { SelectorMultiple } from "./selectorMultiple/SelectorMultiple";
 import { SelectorSimple } from "./selectorSimple/SelectorSimple";
 
 const selectByType = {
-    simple: (props: SimpleSelectorProps) => {
+    simple: (props: SingleSelectorProps) => {
       return <SelectorSimple {...props} />
     },
     multiple: (props: MultipleSelectorProps) => {
@@ -15,7 +15,7 @@ const selectByType = {
   
 export const Selector = ({ type = 'simple', ...rest }: SelectorProps) => {
     if (type === 'simple') {
-      return selectByType.simple(rest as SimpleSelectorProps);
+      return selectByType.simple(rest as SingleSelectorProps);
     }
     return selectByType.multiple(rest as MultipleSelectorProps);
   }

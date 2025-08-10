@@ -43,7 +43,7 @@ export const SCSelectorOptions = styled.div`
   overflow-y: auto;
 `;
 
-export const SCSelectorOption = styled.div<{ isSelected?: boolean }>`
+export const SCSelectorOption = styled.div`
   padding: 12px;
   cursor: pointer;
   display: flex;
@@ -54,11 +54,6 @@ export const SCSelectorOption = styled.div<{ isSelected?: boolean }>`
   &:hover {
     background-color: #f5f5f5;
   }
-
-  ${props => props.isSelected && `
-    background-color: #0070f3;
-    color: white;
-  `}
 `;
 
 export const SCArrowButton = styled.div<{ $isCollapsed: boolean }>`
@@ -70,4 +65,10 @@ export const SCArrowButton = styled.div<{ $isCollapsed: boolean }>`
   transform: rotate(
     ${({ $isCollapsed }) => ($isCollapsed ? '180deg' : '0deg')}
   );
+`;
+
+export const SCChipsWrapper = styled.div`
+  gap: 8px;
+  max-height: 200px;
+  overflow-y: auto;
 `;

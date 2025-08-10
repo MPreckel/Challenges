@@ -1,3 +1,4 @@
+import { PokemonType, typeColors } from "@/pokemons/pokemonTypes";
 import styled from "styled-components";
 
 export const SCMainWrapper = styled.div`
@@ -19,21 +20,41 @@ export const SCSelector = styled.div`
 
 export const SCCardWrapper = styled.div`
   position: absolute;
-  top: 25%;
-  left: 61%;
+  top: 198px;
+  left: 424px;
   transform: translate(-50%, -50%);
   padding: 16px;
 `;
 
-export const SCImageWrapper = styled.div`
+export const SCCardAndImageWrapper = styled.div`
   width: 200px;
   height: 200px;
+  position: relative;
 `;
 
-export const SCCardAndImageWrapper = styled.div`
+export const SCTypesWrapper = styled.div`
   display: flex;
+  position: absolute;
+  top: 504px;
+  left: 386px;
+  gap: 8px;
+  margin-top: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+`;
+
+export const SCType = styled.div<{ type: PokemonType }>`
+  display: flex;
+  padding: 6px;
+  border-radius: 50px;
+  height: 24px;
+  min-width: 80px;
   justify-content: center;
   align-items: center;
-  gap: 80px;
+  color: white;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+  background-color: ${({ type }) => typeColors[type] || '#777'};
+  border: 1px solid ${({ type }) => typeColors[type] ? `${typeColors[type]}99` : '#999'};
 `;
-

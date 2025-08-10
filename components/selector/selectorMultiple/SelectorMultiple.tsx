@@ -1,15 +1,22 @@
-import { Option } from "../selector.interface";
-import { SCSelectorContainer, SCSelectorButton, SCSelectorOptions, SCSelectorOption } from "../selector.styles";
-import { useRef, useState, useEffect } from "react";
+import { DropDownArrowIcon } from "@/icons/DropDownArrowIcon";
+import { Option, MultipleSelectorProps } from "../selector.interface";
+import { SCSelectorContainer, SCSelectorButton, SCSelectorOptions, SCSelectorOption, SCArrowButton, SCChipsWrapper } from "../selector.styles";
+import { useRef, useState, useEffect, FC } from "react";
+import { SCWrapperSpinner } from "@/components/spinner/spinner.styles";
+import { SpinnerComponent } from "@/components/spinner/Spinner";
+import { Chip } from '@/components/chip/Chip';
 
-interface SelectorMultipleProps {
-  data: Option[];
-  value?: string[];
-  onChange?: (value: string[]) => void;
-}
 
-export const SelectorMultiple = ({ data, value = [], onChange }: SelectorMultipleProps) => {
+
+export const SelectorMultiple: FC<MultipleSelectorProps> = ({ 
+  data, 
+  isLoading, 
+  onSelect, 
+  hasMore,
+  label,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedValues, setSelectedValues] = useState<string[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleToggle = () => {
@@ -23,10 +30,25 @@ export const SelectorMultiple = ({ data, value = [], onChange }: SelectorMultipl
   };
 
   const handleSelect = (option: Option) => {
-    const newValue = value.includes(option.value as string)
-      ? value.filter(v => v !== option.value)
-      : [...value, option.value as string];
-    onChange?.(newValue);
+    const optionValue = option.value as string;
+    const newSelectedValues = selectedValues.includes(optionValue)
+      ? selectedValues.filter(v => v !== optionValue)
+      : [...selectedValues, optionValue];
+      
+    setSelectedValues(newSelectedValues);
+    
+    if (onSelect) {
+      onSelect(newSelectedValues);
+    }
+  };
+  
+  const handleRemoveChip = (valueToRemove: string) => {
+    const newSelectedValues = selectedValues.filter(v => v !== valueToRemove);
+    setSelectedValues(newSelectedValues);
+    
+    if (onSelect) {
+      onSelect(newSelectedValues);
+    }
   };
 
   useEffect(() => {
@@ -38,21 +60,68 @@ export const SelectorMultiple = ({ data, value = [], onChange }: SelectorMultipl
 
   return (
     <SCSelectorContainer ref={containerRef}>
-      {/* <SCSelectorButton isOpen={isOpen} onClick={handleToggle}>
-        {value.length > 0 ? value.map(v => data.find(d => d.value === v)?.label).join(', ') : "Seleccionar"}
-        <span>▼</span>
+      <SCSelectorButton 
+        isOpen={isOpen} 
+        onClick={handleToggle}
+      >
+       {label}
+        <SCArrowButton $isCollapsed={isOpen}>
+          <DropDownArrowIcon />
+        </SCArrowButton>
       </SCSelectorButton>
-      <SCSelectorOptions isOpen={isOpen}>
-        {data.map((option) => (
-          <SCSelectorOption
-            key={option.value}
-            isSelected={value.includes(option.value as string)}
-            onClick={() => handleSelect(option)}
-          >
-            {option.label}
-          </SCSelectorOption>
-        ))}
-      </SCSelectorOptions> */}
+      {isOpen && (
+        <SCSelectorOptions>
+          {isLoading && !data.length && (
+            <SCSelectorOption>
+              Cargando...
+            </SCSelectorOption>
+          )}
+          
+          {data.map((option) => (
+            <SCSelectorOption
+              key={option.value}
+              onClick={() => handleSelect(option)}
+              ref={option.ref || null}
+            >
+              {option.label}
+              {selectedValues.includes(option.value as string) && (
+                <span style={{ position: 'absolute', right: '12px' }}>✓</span>
+              )}
+            </SCSelectorOption>
+          ))}
+          
+          {isLoading && data.length && (
+            <SCSelectorOption>
+              <SCWrapperSpinner>
+                <SpinnerComponent size="20px" color="" />
+              </SCWrapperSpinner>
+            </SCSelectorOption>
+          )}
+          
+          {hasMore && !isLoading && data.length && (
+            <SCSelectorOption>
+              Desplázate para cargar más
+            </SCSelectorOption>
+          )}
+        </SCSelectorOptions>
+      )}
+      <SCChipsWrapper>
+
+       {selectedValues.length > 0 && (
+         selectedValues.map(value => {
+           const selectedOption = data.find(opt => opt.value === value);
+           return (
+             <Chip
+             key={value}
+             label={selectedOption?.label || value}
+             onDelete={() => handleRemoveChip(value)}
+             variant="outlined"
+             size="small"
+             />
+            );
+          })
+        )}
+      </SCChipsWrapper>
     </SCSelectorContainer>
   );
 };

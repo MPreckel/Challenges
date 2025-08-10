@@ -1,5 +1,5 @@
 import { DropDownArrowIcon } from "@/icons/DropDownArrowIcon";
-import { Option, SimpleSelectorProps } from "../selector.interface";
+import { Option, SingleSelectorProps } from "../selector.interface";
 import { SCSelectorContainer, SCSelectorButton, SCSelectorOptions, SCSelectorOption, SCArrowButton } from "../selector.styles";
 import { useRef, useState, useEffect } from "react";
 import { SpinnerComponent } from "@/components/spinner/Spinner";
@@ -9,11 +9,10 @@ import { SCWrapperSpinner } from "@/components/spinner/spinner.styles";
 
 export const SelectorSimple = ({ 
   data, 
-  value, 
   isLoading, 
   onSelect, 
   hasMore 
-}: SimpleSelectorProps & { hasMore?: boolean }) => {
+}: SingleSelectorProps & { hasMore?: boolean }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState<string | number>('');
   const containerRef = useRef<HTMLDivElement>(null);
@@ -62,7 +61,6 @@ export const SelectorSimple = ({
           {data.map((option) => (
             <SCSelectorOption
               key={option.value}
-              isSelected={option.value === value}
               onClick={() => handleSelect(option)}
               ref={option.ref || null}
             >
