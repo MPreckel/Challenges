@@ -5,7 +5,6 @@ export const SCMainWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 80px;
 `;
 
 export const SCSelectorsWrapper = styled.div`
@@ -40,7 +39,6 @@ export const SCTypesWrapper = styled.div`
   gap: 8px;
   margin-top: 8px;
   justify-content: center;
-  flex-wrap: wrap;
 `;
 
 export const SCType = styled.div<{ type: PokemonType }>`
