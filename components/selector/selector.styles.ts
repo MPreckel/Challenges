@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const SCSelectorContainer = styled.div`
   width: 100%;
+  position: relative;
 `;
 
 export const SCSelectorButton = styled.div<{ isOpen: boolean }>`
@@ -50,6 +51,7 @@ export const SCSelectorOption = styled.div`
   align-items: center;
   justify-content: center;
   gap: 8px;
+  min-width: 180px;
 
   &:hover {
     background-color: #f5f5f5;
@@ -68,7 +70,15 @@ export const SCArrowButton = styled.div<{ $isCollapsed: boolean }>`
 `;
 
 export const SCChipsWrapper = styled.div`
-  gap: 8px;
+  position: absolute;
+  display: flex;
+  top: 60px;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 8px;
+  background: white;
   max-height: 200px;
   overflow-y: auto;
+  min-height: 40px;
+  z-index: 999;
 `;

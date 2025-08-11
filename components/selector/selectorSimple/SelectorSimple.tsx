@@ -69,7 +69,7 @@ export const SelectorSimple = ({
             </SCSelectorOption>
           ))}
           
-          {data.length && (
+          {isLoading && data.length && (
             <SCSelectorOption>
               <SCWrapperSpinner>
                 <SpinnerComponent size="20px" />

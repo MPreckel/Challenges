@@ -31,11 +31,15 @@ export const SCCardAndImageWrapper = styled.div`
   position: relative;
 `;
 
-export const SCTypesWrapper = styled.div`
+interface SCTypesWrapperProps {
+  $singleType?: boolean;
+}
+
+export const SCTypesWrapper = styled.div<SCTypesWrapperProps>`
   display: flex;
   position: absolute;
   top: 504px;
-  left: 386px;
+  left: ${props => props.$singleType ? '386px' : '330px'};
   gap: 8px;
   margin-top: 8px;
   justify-content: center;

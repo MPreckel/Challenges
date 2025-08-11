@@ -5,6 +5,7 @@ import { useRef, useState, useEffect, FC } from "react";
 import { SCWrapperSpinner } from "@/components/spinner/spinner.styles";
 import { SpinnerComponent } from "@/components/spinner/Spinner";
 import { Chip } from '@/components/chip/Chip';
+import { messages } from "@/messages/messages";
 
 
 
@@ -100,14 +101,14 @@ export const SelectorMultiple: FC<MultipleSelectorProps> = ({
           
           {hasMore && !isLoading && data.length && (
             <SCSelectorOption>
-              Desplázate para cargar más
+              {messages.scroll}
             </SCSelectorOption>
           )}
         </SCSelectorOptions>
       )}
-      <SCChipsWrapper>
 
-       {selectedValues.length > 0 && (
+      <SCChipsWrapper>
+       {!!selectedValues.length && (
          selectedValues.map(value => {
            const selectedOption = data.find(opt => opt.value === value);
            return (

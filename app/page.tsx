@@ -77,12 +77,12 @@ export default function Home() {
           pokemonName={selectedPokemon || null} 
           />
         </SCCardWrapper>
-          {selectedPokemon && (
-            <SCTypesWrapper>
-              {detailedPokemons
-                .find(p => p.name === selectedPokemon)
-                ?.types
-                .map((type, index) => (
+          {selectedPokemon && (() => {
+            const pokemon = detailedPokemons.find(p => p.name === selectedPokemon);
+            const types = pokemon?.types || [];
+            return (
+              <SCTypesWrapper $singleType={types.length === 1}>
+                {types.map((type, index) => (
                   <SCType 
                     key={index}
                     type={type.type.name.toLowerCase() as PokemonType}
@@ -90,8 +90,9 @@ export default function Home() {
                     {type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1)}
                   </SCType>
                 ))}
-            </SCTypesWrapper>
-          )}
+              </SCTypesWrapper>
+            );
+          })()}
         <Image
         onError={() => {console.log('Error al cargar la imagen')}} 
         src="/pokedex.png" 
