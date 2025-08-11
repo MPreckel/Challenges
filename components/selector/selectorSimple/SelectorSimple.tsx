@@ -4,6 +4,7 @@ import { SCSelectorContainer, SCSelectorButton, SCSelectorOptions, SCSelectorOpt
 import { useRef, useState, useEffect } from "react";
 import { SpinnerComponent } from "@/components/spinner/Spinner";
 import { SCWrapperSpinner } from "@/components/spinner/spinner.styles";
+import { labels, messages } from "@/messages/messages";
 
 
 
@@ -54,7 +55,7 @@ export const SelectorSimple = ({
         <SCSelectorOptions>
           {isLoading && !data.length && (
             <SCSelectorOption>
-              Cargando...
+              {labels.loading}
             </SCSelectorOption>
           )}
           
@@ -68,17 +69,17 @@ export const SelectorSimple = ({
             </SCSelectorOption>
           ))}
           
-          {true && data.length > 0 && (
+          {data.length && (
             <SCSelectorOption>
               <SCWrapperSpinner>
-                <SpinnerComponent size="20px" color="" />
+                <SpinnerComponent size="20px" />
               </SCWrapperSpinner>
             </SCSelectorOption>
           )}
           
           {hasMore && !isLoading && data.length && (
             <SCSelectorOption>
-              Desplázate para cargar más
+              {messages.scroll}
             </SCSelectorOption>
           )}
         </SCSelectorOptions>

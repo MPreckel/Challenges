@@ -16,8 +16,6 @@ export default function Home() {
   } = useGetPokemons();
   const [selectedPokemon, setSelectedPokemon] = useState<string | null>(null);
   const observer = useRef<IntersectionObserver>(null);
-console.log(detailedPokemons, 'detailedPokemons')
-console.log(selectedPokemon, 'selectedPokemon')
   // Callback para el último elemento del selector
   const lastPokemonElementRef = useCallback((node: HTMLElement | null) => {
     if (loading) return;

@@ -1,6 +1,7 @@
 export interface Option<T extends HTMLElement = HTMLDivElement> {
   value: string | number;
   label: string;
+  id?: number;
   ref?: React.RefObject<T> | null;
 }
 
