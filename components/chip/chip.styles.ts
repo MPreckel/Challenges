@@ -73,7 +73,7 @@ export const StyledChip = styled.div<StyledChipProps>`
   }}
 `;
 
-export const ChipIcon = styled.span`
+export const ChipIcon = styled.div`
   display: inline-flex;
   align-items: center;
   margin-right: 0.5rem;

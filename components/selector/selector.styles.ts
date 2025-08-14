@@ -5,7 +5,20 @@ export const SCSelectorContainer = styled.div`
   position: relative;
 `;
 
-export const SCSelectorButton = styled.div<{ isOpen: boolean }>`
+export const SCSearchInput = styled.input`
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: inherit;
+  color: inherit;
+  padding: 0;
+  margin: 0;
+  font-family: inherit;
+  line-height: 1.5;
+`;
+
+export const SCSelectorButton = styled.button<{ isOpen: boolean; hasSelection?: boolean }>`
   width: 100%;
   padding: 12px;
   border: 1px solid #ddd;
@@ -16,6 +29,8 @@ export const SCSelectorButton = styled.div<{ isOpen: boolean }>`
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+  text-align: left;
+  font: inherit;
 
   &:hover {
     border-color: #aaa;
@@ -81,4 +96,12 @@ export const SCChipsWrapper = styled.div`
   overflow-y: auto;
   min-height: 40px;
   z-index: 999;
+`;
+
+export const SCSearchButton = styled.button`
+  height: 24px;
+  color: white;
+  border: none;
+  background-color: blue;
+  cursor: pointer;
 `;

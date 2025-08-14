@@ -1,13 +1,15 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState } from "react";
+
+interface PokemonBasicInfo {
+  name: string;
+  url: string;
+}
 
 interface PokemonResponse {
   count: number;
   next: string | null;
   previous: string | null;
-  results: Array<{
-    name: string;
-    url: string;
-  }>;
+  results: PokemonBasicInfo[];
 }
 
 interface PokemonDetails {
@@ -28,16 +30,23 @@ interface PokemonDetails {
 export function useGetPokemons() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [detailedPokemons, setDetailedPokemons] = useState<PokemonDetails[]>([]);
+  const [pokemonList, setPokemonList] = useState<PokemonBasicInfo[]>([]);
+  const [detailedPokemon, setDetailedPokemon] = useState<PokemonDetails | null>(null);
   const [nextUrl, setNextUrl] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(true);
+  const baseUrl = 'https://pokeapi.co/api/v2/pokemon/';
+  const url_default = 'https://pokeapi.co/api/v2/pokemon?limit=18&offset=0';
 
-  const getPokemones = useCallback(async (url?: string) => {
+  const fetchFunction = (url: string) => {
+    const response = fetch(url);
+    return response;
+  };
+  const getPokemons = useCallback(async (url?: string) => {
     try {
       setLoading(true);
       setError(null);
-      const apiUrl = url || 'https://pokeapi.co/api/v2/pokemon?limit=18&offset=0';
-      const response = await fetch(apiUrl);
+      const apiUrl = url || url_default;
+      const response = await fetchFunction(apiUrl);
       
       if (!response.ok) {
         throw new Error('Failed to fetch Pokémon data');
@@ -47,18 +56,7 @@ export function useGetPokemons() {
       setNextUrl(data.next);
       setHasMore(data.next !== null);
 
-      // Fetch detailed data for each Pokémon
-      const detailedData = await Promise.all(
-        data.results.map(async (pokemon) => {
-          const response = await fetch(pokemon.url);
-          if (!response.ok) {
-            throw new Error(`Failed to fetch details for ${pokemon.name}`);
-          }
-          return await response.json();
-        })
-      );
-
-      setDetailedPokemons(prev => url ? [...prev, ...detailedData] : detailedData);
+      setPokemonList(prev => url ? [...prev, ...data.results] : data.results);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
@@ -66,18 +64,51 @@ export function useGetPokemons() {
     }
   }, []);
 
+  const getPokemonDetails = useCallback(async (pokemonName: string) => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      // Buscar el Pokémon en la lista básica para obtener su URL
+      const pokemon = pokemonList.find(p => p.name === pokemonName);
+      if (!pokemon) {
+        throw new Error('Pokémon not found in the list');
+      }
+
+      const response = await fetch(pokemon.url);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch details for ${pokemonName}`);
+      }
+
+      const data: PokemonDetails = await response.json();
+      setDetailedPokemon(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+    } finally {
+      setLoading(false);
+    }
+  }, [pokemonList]);
+
   const loadMorePokemons = useCallback(() => {
     if (nextUrl && !loading && hasMore) {
-      getPokemones(nextUrl);
+      getPokemons(nextUrl);
     }
-  }, [nextUrl, loading, hasMore, getPokemones]);
+  }, [nextUrl, loading, hasMore, getPokemons]);
+
+  const searchPokemon = async (searchValue: string) => {
+    const url_pokemon = `${baseUrl}${searchValue.toLowerCase()}`;
+    await fetchFunction(url_pokemon);
+  };
 
   return {
-    detailedPokemons,
+    pokemonList,
+    detailedPokemon,
     loading,
     error,
-    getPokemones,
+    getPokemons,
+    getPokemonDetails,
     loadMorePokemons,
     hasMore,
+    searchPokemon,
   };
 }

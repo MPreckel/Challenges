@@ -9,15 +9,18 @@ import { PokemonType } from "@/pokemons/pokemonTypes";
 
 export default function Home() {
   const { 
-    detailedPokemons, 
+    pokemonList, 
+    detailedPokemon, 
     loading, 
-    getPokemones, 
+    getPokemons, 
     loadMorePokemons, 
-    hasMore 
+    hasMore,
+    getPokemonDetails,
+    searchPokemon 
   } = useGetPokemons();
   const [selectedPokemon, setSelectedPokemon] = useState<string | null>(null);
   const observer = useRef<IntersectionObserver>(null);
-  // Callback para el último elemento del selector
+
   const lastPokemonElementRef = useCallback((node: HTMLElement | null) => {
     if (loading) return;
     if (observer.current) observer.current.disconnect();
@@ -32,54 +35,58 @@ export default function Home() {
   }, [loading, hasMore, loadMorePokemons]);
 
   useEffect(() => {
-    getPokemones();
-  }, [getPokemones]);
+    getPokemons();
+  }, [getPokemons]);
 
   const handlePokemonSelect = (value: string) => {
     setSelectedPokemon(value);
+    getPokemonDetails(value);
   };
+ 
  
   return (
     <SCMainWrapper>
       <SCSelectorsWrapper>
         <SCSelector>
-      <Selector
-        type="simple"
-        onSelect={handlePokemonSelect}
-        data={detailedPokemons.map((pokemon, index) => ({
-          value: pokemon.name,
-          label: pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1),
-          ref: index === detailedPokemons.length - 1 ? lastPokemonElementRef : null
-        }))}
-        isLoading={loading}
-        hasMore={hasMore}
-        />
+        <Selector
+            type="simple"
+            onSelect={handlePokemonSelect}
+            data={pokemonList.map((pokemon, index) => ({
+              value: pokemon.name,
+              label: pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1),
+              ref: index === pokemonList.length - 1 ? lastPokemonElementRef : null
+            }))}
+            isLoading={loading}
+            hasMore={hasMore}
+            onSearch={searchPokemon}
+          />
         
         </SCSelector>
         <SCSelector>
 
-      <Selector
+      {/* <Selector
         type="multiple"
-        data={detailedPokemons.map((pokemon, index) => ({
+        data={pokemonList.map((pokemon, index) => ({
           value: pokemon.name,
           label: pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1),
-          ref: index === detailedPokemons.length - 1 ? lastPokemonElementRef : null
+          ref: index === pokemonList.length - 1 ? lastPokemonElementRef : null
         }))}
         isLoading={loading}
         hasMore={hasMore}
+        onSelect={handlePokemonSelect}
         label="Selecciona Pokemones"
-        />
+        /> */}
         </SCSelector>
         </SCSelectorsWrapper>
         <SCCardAndImageWrapper>
         <SCCardWrapper>
         <Card 
-          imageUrl={detailedPokemons.find(p => p.name === selectedPokemon)?.sprites.front_default || null}
+          imageUrl={detailedPokemon?.sprites.front_default || null}
           pokemonName={selectedPokemon || null} 
           />
         </SCCardWrapper>
           {selectedPokemon && (() => {
-            const pokemon = detailedPokemons.find(p => p.name === selectedPokemon);
+            const pokemon = detailedPokemon;
             const types = pokemon?.types || [];
             return (
               <SCTypesWrapper $singleType={types.length === 1}>

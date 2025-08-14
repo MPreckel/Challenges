@@ -1,4 +1,7 @@
-export const DropDownArrowIcon: any = ({
+import { FC } from "react"
+import { IconsProps } from "./icons.interface"
+
+export const DropDownArrowIcon: FC<IconsProps> = ({
     color = '#000',
     size = '24px',
   }) => {
