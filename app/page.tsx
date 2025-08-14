@@ -3,8 +3,9 @@ import { Card } from "@/components/card/Card";
 import { Selector } from "@/components/selector/Selector";
 import { useGetPokemons } from "@/pokemons/useGetPokemons";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { SCCardAndImageWrapper, SCCardWrapper, SCMainWrapper, SCSelector, SCSelectorsWrapper, SCType, SCTypesWrapper, type PokemonType } from "./test/page.styles";
+import { SCCardAndImageWrapper, SCCardWrapper, SCMainWrapper, SCSelector, SCSelectorsWrapper, SCType, SCTypesWrapper } from "./test/page.styles";
 import Image from "next/image";
+import { PokemonType } from "@/pokemons/pokemonTypes";
 
 export default function Home() {
   const { 

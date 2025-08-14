@@ -15,7 +15,7 @@ export interface BaseSelectorProps {
 export interface SingleSelectorProps extends BaseSelectorProps {
   type: 'simple';
   value?: string;
-  onSelect?: (value: string) => void;
+  onSelect?: (value: string[]) => void;
 }
 
 export interface MultipleSelectorProps extends BaseSelectorProps {
