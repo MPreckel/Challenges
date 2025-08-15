@@ -27,7 +27,6 @@ export const SCCardWrapper = styled.div`
 
 export const SCCardAndImageWrapper = styled.div`
   width: 200px;
-  height: 200px;
   position: relative;
 `;
 

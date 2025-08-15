@@ -16,7 +16,7 @@ export default function Home() {
     loadMorePokemons, 
     hasMore,
     getPokemonDetails,
-    searchPokemon 
+    searchPokemon
   } = useGetPokemons();
   const [selectedPokemon, setSelectedPokemon] = useState<string | null>(null);
   const observer = useRef<IntersectionObserver>(null);
@@ -82,10 +82,10 @@ export default function Home() {
         <SCCardWrapper>
         <Card 
           imageUrl={detailedPokemon?.sprites.front_default || null}
-          pokemonName={selectedPokemon || null} 
+          pokemonName={selectedPokemon || detailedPokemon?.name || null} 
           />
         </SCCardWrapper>
-          {selectedPokemon && (() => {
+          {detailedPokemon && (() => {
             const pokemon = detailedPokemon;
             const types = pokemon?.types || [];
             return (

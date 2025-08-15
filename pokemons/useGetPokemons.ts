@@ -64,30 +64,33 @@ export function useGetPokemons() {
     }
   }, []);
 
+  // Helper compartido para obtener detalles por nombre/id o por URL directa
+  const fetchPokemonDetails = useCallback(async (identifierOrUrl: string, isUrl: boolean = false): Promise<PokemonDetails> => {
+    const targetUrl = isUrl
+      ? identifierOrUrl
+      : `${baseUrl}${identifierOrUrl.toLowerCase()}`;
+    const response = await fetchFunction(targetUrl);
+    if (!response.ok) {
+      throw new Error('Failed to fetch Pokémon data');
+    }
+    const data: PokemonDetails = await response.json();
+    return data;
+  }, []);
+
   const getPokemonDetails = useCallback(async (pokemonName: string) => {
     try {
       setLoading(true);
       setError(null);
-      
-      // Buscar el Pokémon en la lista básica para obtener su URL
+      // Si existe en la lista, usamos su URL; si no, consultamos por nombre directamente
       const pokemon = pokemonList.find(p => p.name === pokemonName);
-      if (!pokemon) {
-        throw new Error('Pokémon not found in the list');
-      }
-
-      const response = await fetch(pokemon.url);
-      if (!response.ok) {
-        throw new Error(`Failed to fetch details for ${pokemonName}`);
-      }
-
-      const data: PokemonDetails = await response.json();
+      const data = await fetchPokemonDetails(pokemon ? pokemon.url : pokemonName, !!pokemon);
       setDetailedPokemon(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setLoading(false);
     }
-  }, [pokemonList]);
+  }, [pokemonList, fetchPokemonDetails]);
 
   const loadMorePokemons = useCallback(() => {
     if (nextUrl && !loading && hasMore) {
@@ -96,10 +99,18 @@ export function useGetPokemons() {
   }, [nextUrl, loading, hasMore, getPokemons]);
 
   const searchPokemon = async (searchValue: string) => {
-    const url_pokemon = `${baseUrl}${searchValue.toLowerCase()}`;
-    await fetchFunction(url_pokemon);
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await fetchPokemonDetails(searchValue);
+      setDetailedPokemon(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+      setDetailedPokemon(null);
+    } finally {
+      setLoading(false);
+    }
   };
-
   return {
     pokemonList,
     detailedPokemon,
