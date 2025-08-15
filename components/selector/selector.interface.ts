@@ -23,6 +23,7 @@ export interface MultipleSelectorProps extends BaseSelectorProps {
   type: 'multiple';
   value?: string[];
   onSelect?: (value: string[]) => void;
+  onSearch?: ((value: string) => void) | undefined;
 }
 
 export type SelectorProps = SingleSelectorProps | MultipleSelectorProps;

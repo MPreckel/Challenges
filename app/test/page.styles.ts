@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 export const SCMainWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
@@ -26,7 +27,6 @@ export const SCCardWrapper = styled.div`
 `;
 
 export const SCCardAndImageWrapper = styled.div`
-  width: 200px;
   position: relative;
 `;
 

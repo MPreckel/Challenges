@@ -6,7 +6,6 @@ export const SCSelectorContainer = styled.div`
 `;
 
 export const SCSearchInput = styled.input`
-  width: 100%;
   border: none;
   outline: none;
   background: transparent;
@@ -17,18 +16,20 @@ export const SCSearchInput = styled.input`
   font-family: inherit;
   line-height: 1.5;
 `;
-
-export const SCSelectorButton = styled.button<{ isOpen: boolean; hasSelection?: boolean }>`
-  width: 100%;
+export const SCSelectorAndButtonWrapper = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+export const SCSelectorWrapper = styled.button<{ isOpen: boolean; hasSelection?: boolean }>`
   padding: 12px;
+  gap: 8px;
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 30px;
   background-color: white;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
   text-align: left;
   font: inherit;
 
@@ -98,10 +99,17 @@ export const SCChipsWrapper = styled.div`
   z-index: 999;
 `;
 
+export const SCSearchWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 export const SCSearchButton = styled.button`
-  height: 24px;
+  height: 40px;
+  padding: 0 20px;
   color: white;
   border: none;
   background-color: blue;
   cursor: pointer;
+  border-radius: 30px;
 `;

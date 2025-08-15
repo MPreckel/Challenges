@@ -1,12 +1,13 @@
 import { DropDownArrowIcon } from "@/icons/DropDownArrowIcon";
 import { MultipleSelectorProps } from "../selector.interface";
-import { SCSelectorContainer, SCSelectorButton, SCSelectorOptions, SCSelectorOption, SCArrowButton, SCChipsWrapper } from "../selector.styles";
+import { SCSelectorContainer, SCSelectorOptions, SCSelectorOption, SCArrowButton, SCChipsWrapper, SCSelectorWrapper, SCSelectorAndButtonWrapper, SCSearchInput, SCSearchWrapper, SCSearchButton } from "../selector.styles";
 import { FC } from "react";
 import { SCWrapperSpinner } from "@/components/spinner/spinner.styles";
 import { SpinnerComponent } from "@/components/spinner/Spinner";
 import { Chip } from '@/components/chip/Chip';
-import { messages } from "@/messages/messages";
+import { labels, messages } from "@/messages/messages";
 import { useSelectMultiple } from "./useSelectorMultiple";
+import { SearchIcon } from "@/icons/SearchIcon";
 
 
 
@@ -16,73 +17,73 @@ export const SelectorMultiple: FC<MultipleSelectorProps> = ({
   onSelect, 
   hasMore,
   label,
+  onSearch,
 }) => {
-const { isOpen, selectedValues, containerRef, handleToggle, handleSelect, handleRemoveChip } = useSelectMultiple({ onSelect });
-
-  return (
-    <SCSelectorContainer ref={containerRef}>
-      <SCSelectorButton 
-        isOpen={isOpen} 
-        onClick={handleToggle}
-      >
-       {label}
-        <SCArrowButton $isCollapsed={isOpen}>
-          <DropDownArrowIcon />
-        </SCArrowButton>
-      </SCSelectorButton>
-      {isOpen && (
-        <SCSelectorOptions>
-          {isLoading && !data.length && (
-            <SCSelectorOption>
-              Cargando...
-            </SCSelectorOption>
-          )}
-          
-          {data.map((option) => (
-            <SCSelectorOption
-              key={option.value}
-              onClick={() => handleSelect(option)}
-              ref={option.ref || null}
-            >
-              {option.label}
-              {selectedValues.includes(option.value as string) && (
-                <span style={{ position: 'absolute', right: '12px' }}>✓</span>
-              )}
-            </SCSelectorOption>
-          ))}
-          
-          {isLoading && data.length && (
-            <SCSelectorOption>
-              <SCWrapperSpinner>
-                <SpinnerComponent size="20px" color="" />
-              </SCWrapperSpinner>
-            </SCSelectorOption>
-          )}
-          
-          {hasMore && !isLoading && data.length && (
-            <SCSelectorOption>
-              {messages.scroll}
-            </SCSelectorOption>
-          )}
-        </SCSelectorOptions>
-      )}
-
-      <SCChipsWrapper>
-       {!!selectedValues.length && (
-         selectedValues.map(value => {
-           const selectedOption = data.find(opt => opt.value === value);
-           return (
-             <Chip
-             key={value}
-             label={selectedOption?.label || value}
-             onDelete={() => handleRemoveChip(value)}
-             variant="outlined"
-             size="small"
-             />
-            );
-          })
-        )}
-      </SCChipsWrapper>
-    </SCSelectorContainer>
-  );
+const { isOpen, selectedValues, containerRef, handleToggle, handleSelect, inputRef, searchValue, handleSearchChange } = useSelectMultiple({ onSelect });
+const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    e.stopPropagation();
+    const value = searchValue.trim();
+    if (value) onSearch?.(value);
+  }
 };
+  return (
+   <SCSelectorContainer ref={containerRef}>
+         <SCSelectorAndButtonWrapper>
+           <SCSelectorWrapper
+             isOpen={isOpen}
+             onClick={handleToggle}
+           >
+             <SearchIcon />
+             <SCSearchInput
+               ref={inputRef}
+               type="text"
+               value={searchValue}
+               onChange={handleSearchChange}
+               onKeyDown={handleKeyDown}
+               onClick={(e) => e.stopPropagation()}
+               placeholder={String(selectedValues) || "Buscar pokemon"}
+             />
+             <SCArrowButton $isCollapsed={isOpen}>
+               <DropDownArrowIcon />
+             </SCArrowButton>
+           </SCSelectorWrapper>
+           <SCSearchWrapper>
+             <SCSearchButton onClick={() => onSearch?.(searchValue)}>
+               Buscar
+             </SCSearchButton>
+           </SCSearchWrapper>
+         </SCSelectorAndButtonWrapper>
+         {isOpen && (
+           <SCSelectorOptions>
+             {isLoading && !data.length && (
+               <SCSelectorOption>{labels.loading}</SCSelectorOption>
+             )}
+   
+             {data.map((option) => (
+               <SCSelectorOption
+                 key={option.value}
+                 onClick={() => handleSelect(option)}
+                 ref={option.ref || null}
+               >
+                 {option.label}
+               </SCSelectorOption>
+             ))}
+   
+             {isLoading && data.length > 0 && (
+               <SCSelectorOption>
+                 <SCWrapperSpinner>
+                   <SpinnerComponent size="20px" />
+                 </SCWrapperSpinner>
+               </SCSelectorOption>
+             )}
+   
+             {hasMore && !isLoading && data.length > 0 && (
+               <SCSelectorOption>{messages.scroll}</SCSelectorOption>
+             )}
+           </SCSelectorOptions>
+         )}
+       </SCSelectorContainer>
+     );
+   };

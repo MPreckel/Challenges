@@ -1,56 +1,60 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Option } from "../selector.interface";
   
 export const useSelectMultiple = ({ onSelect }: { onSelect?: (values: string[]) => void }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
+  const [searchValue, setSearchValue] = useState('');
   const containerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleToggle = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const handleClickOutside = (event: MouseEvent) => {
-    if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-      setIsOpen(false);
-    }
-  };
-
-  const handleSelect = (option: Option) => {
-    const optionValue = option.value as string;
-    const newSelectedValues = selectedValues.includes(optionValue)
-      ? selectedValues.filter(v => v !== optionValue)
-      : [...selectedValues, optionValue];
+   const handleToggle = useCallback(() => {
+      const newIsOpen = !isOpen;
+      setIsOpen(newIsOpen);
       
-    setSelectedValues(newSelectedValues);
-    
-    if (onSelect) {
-      onSelect(newSelectedValues);
-    }
-  };
+      if (newIsOpen && inputRef.current) {
+        // Small timeout to ensure the input is rendered before focusing
+        setTimeout(() => inputRef.current?.focus(), 0);
+      } else {
+        setSearchValue('');
+      }
+    }, [isOpen]);
   
-  const handleRemoveChip = (valueToRemove: string) => {
-    const newSelectedValues = selectedValues.filter(v => v !== valueToRemove);
-    setSelectedValues(newSelectedValues);
-    
-    if (onSelect) {
-      onSelect(newSelectedValues);
-    }
-  };
+    const handleClickOutside = useCallback((event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }, []);
   
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+    const handleSelect = useCallback((option: Option) => {
+      setSelectedValues(option.label);
+      setSearchValue('');
+      setIsOpen(false);
+      if (onSelect) {
+        onSelect(option.value as string);
+      }
+    }, [onSelect]);
+  
+    const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchValue(e.target.value);
+    }, []);
+  
+    useEffect(() => {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, [handleClickOutside]);
+  
+    return {
+      isOpen,
+      selectedValues,
+      searchValue,
+      inputRef,
+      containerRef,
+      handleToggle,
+      handleSelect,
+      handleSearchChange,
+      setSearchValue,
     };
-  }, []);
-
-  return {
-    isOpen,
-    selectedValues,
-    containerRef,
-    handleToggle,
-    handleSelect,
-    handleRemoveChip,
-  };
 };

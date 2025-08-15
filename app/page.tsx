@@ -38,6 +38,24 @@ export default function Home() {
     getPokemons();
   }, [getPokemons]);
 
+  // Restaurar el Pokémon guardado al montar
+  useEffect(() => {
+    const saved = typeof window !== 'undefined' ? localStorage.getItem('selectedPokemon') : null;
+    if (saved) {
+      setSelectedPokemon(saved);
+      getPokemonDetails(saved);
+    }
+  }, [getPokemonDetails]);
+
+  // Guardar el Pokémon detallado cuando cambie
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const name = detailedPokemon?.name;
+    if (name) {
+      localStorage.setItem('selectedPokemon', name);
+    }
+  }, [detailedPokemon?.name]);
+
   const handlePokemonSelect = (value: string) => {
     setSelectedPokemon(value);
     getPokemonDetails(value);
@@ -64,24 +82,24 @@ export default function Home() {
         </SCSelector>
         <SCSelector>
 
-      {/* <Selector
+      <Selector
         type="multiple"
-        data={pokemonList.map((pokemon, index) => ({
-          value: pokemon.name,
-          label: pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1),
-          ref: index === pokemonList.length - 1 ? lastPokemonElementRef : null
-        }))}
-        isLoading={loading}
-        hasMore={hasMore}
         onSelect={handlePokemonSelect}
-        label="Selecciona Pokemones"
-        /> */}
+            data={pokemonList.map((pokemon, index) => ({
+              value: pokemon.name,
+              label: pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1),
+              ref: index === pokemonList.length - 1 ? lastPokemonElementRef : null
+            }))}
+            isLoading={loading}
+            hasMore={hasMore}
+            onSearch={searchPokemon}
+        />
         </SCSelector>
         </SCSelectorsWrapper>
         <SCCardAndImageWrapper>
         <SCCardWrapper>
         <Card 
-          imageUrl={detailedPokemon?.sprites.front_default || null}
+          imageUrl={detailedPokemon?.sprites?.front_default || null}
           pokemonName={selectedPokemon || detailedPokemon?.name || null} 
           />
         </SCCardWrapper>
