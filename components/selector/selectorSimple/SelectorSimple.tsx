@@ -23,6 +23,7 @@ export const SelectorSimple = ({
   onSelect,
   hasMore,
   onSearch,
+  selectedPokemon,
 }: SingleSelectorProps & { hasMore?: boolean }) => {
   const {
     isOpen,
@@ -60,7 +61,7 @@ export const SelectorSimple = ({
             onChange={handleSearchChange}
             onKeyDown={handleKeyDown}
             onClick={(e) => e.stopPropagation()}
-            placeholder={String(selected) || "Buscar pokemon"}
+            placeholder={String(selected) || selectedPokemon.charAt(0).toUpperCase() + selectedPokemon.slice(1) || "Buscar pokemon"}
           />
           <SCArrowButton $isCollapsed={isOpen}>
             <DropDownArrowIcon />

@@ -40,16 +40,18 @@ export default function Home() {
 
   // Restaurar el Pokémon guardado al montar
   useEffect(() => {
-    const saved = typeof window !== 'undefined' ? localStorage.getItem('selectedPokemon') : null;
-    if (saved) {
-      setSelectedPokemon(saved);
-      getPokemonDetails(saved);
+    const savedPokemon = localStorage.getItem('selectedPokemon');
+    if (savedPokemon) {
+      setSelectedPokemon(savedPokemon);
+      getPokemonDetails(savedPokemon);
     }
-  }, [getPokemonDetails]);
+  }, []);
+console.log(selectedPokemon, 'selectedPokemon');
+console.log(detailedPokemon, 'detailedPokemon');
 
   // Guardar el Pokémon detallado cuando cambie
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (!window) return;
     const name = detailedPokemon?.name;
     if (name) {
       localStorage.setItem('selectedPokemon', name);
@@ -71,12 +73,13 @@ export default function Home() {
             onSelect={handlePokemonSelect}
             data={pokemonList.map((pokemon, index) => ({
               value: pokemon.name,
-              label: pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1),
+              label: pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1) || detailedPokemon?.name,
               ref: index === pokemonList.length - 1 ? lastPokemonElementRef : null
             }))}
             isLoading={loading}
             hasMore={hasMore}
             onSearch={searchPokemon}
+            selectedPokemon={selectedPokemon}
           />
         
         </SCSelector>

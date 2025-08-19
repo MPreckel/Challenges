@@ -17,6 +17,7 @@ export interface SingleSelectorProps extends BaseSelectorProps {
   value?: string;
   onSelect: ((value: string) => void) | undefined;
   onSearch?: ((value: string) => void) | undefined;
+  selectedPokemon?: string;
 }
 
 export interface MultipleSelectorProps extends BaseSelectorProps {
