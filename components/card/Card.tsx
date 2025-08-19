@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { CardProps } from './card.interface';
 import { SCImageWrapper, SCText } from './card.styles';
+import { labels, messages } from '@/messages/messages';
 
 export const Card: FC<CardProps> = ({ imageUrl, pokemonName }) => {
   return (
@@ -8,13 +9,13 @@ export const Card: FC<CardProps> = ({ imageUrl, pokemonName }) => {
       {imageUrl ? (
       <img 
         src={imageUrl} 
-        alt={pokemonName}
+        alt={pokemonName ?? labels.pokemon}
         width={200}
         height={200} 
       />
       ) : (
         <SCText>
-          Selecciona un pokemon
+          {messages.selectPokemon}
         </SCText>
       )}
     </SCImageWrapper>

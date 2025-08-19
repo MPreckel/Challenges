@@ -14,63 +14,19 @@ import {
 } from "./test/page.styles";
 import Image from "next/image";
 import { PokemonType } from "@/pokemons/pokemonTypes";
+import { usePage } from "./usePage";
 
 export default function Home() {
   const {
     pokemonList,
     detailedPokemon,
     loading,
-    getPokemons,
-    loadMorePokemons,
     hasMore,
-    getPokemonDetails,
     searchPokemon,
-  } = useGetPokemons();
-  const [selectedPokemon, setSelectedPokemon] = useState<string | null>(null);
-  const observer = useRef<IntersectionObserver>(null);
-
-  const lastPokemonElementRef = useCallback(
-    (node: HTMLElement | null) => {
-      if (loading) return;
-      if (observer.current) observer.current.disconnect();
-
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMore) {
-          loadMorePokemons();
-        }
-      });
-
-      if (node) observer.current.observe(node);
-    },
-    [loading, hasMore, loadMorePokemons]
-  );
-
-  useEffect(() => {
-    getPokemons();
-  }, [getPokemons]);
-
-  // Restaurar el Pokémon guardado al montar
-  useEffect(() => {
-    const savedPokemon = localStorage.getItem("selectedPokemon");
-    if (savedPokemon) {
-      setSelectedPokemon(savedPokemon);
-      getPokemonDetails(savedPokemon);
-    }
-  }, []);
-
-  // Guardar el Pokémon detallado cuando cambie
-  useEffect(() => {
-    if (!window) return;
-    const name = detailedPokemon?.name;
-    if (name) {
-      localStorage.setItem("selectedPokemon", name);
-    }
-  }, [detailedPokemon?.name]);
-
-  const handlePokemonSelect = (value: string) => {
-    setSelectedPokemon(value);
-    getPokemonDetails(value);
-  };
+    selectedPokemon,
+    handlePokemonSelect,
+    lastPokemonElementRef,
+  } = usePage();
 
   return (
     <SCMainWrapper>

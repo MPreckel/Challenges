@@ -78,7 +78,7 @@ export const SelectorSimple = ({
             <SCSelectorOption>{labels.loading}</SCSelectorOption>
           )}
 
-          {data.map((option) => (
+          {data?.map((option) => (
             <SCSelectorOption
               key={option.value}
               onClick={() => handleSelect(option)}
