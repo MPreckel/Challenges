@@ -34,7 +34,7 @@ export const SelectorSimple = ({
     handleToggle,
     handleSelect,
     handleSearchChange,
-  } = useSelectorSimple({ onSelect, data });
+  } = useSelectorSimple({ type: 'simple', onSelect, data });
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -49,9 +49,8 @@ export const SelectorSimple = ({
     <SCSelectorContainer ref={containerRef}>
       <SCSelectorAndButtonWrapper>
         <SCSelectorWrapper
-          isOpen={isOpen}
+          $isOpen={isOpen}
           onClick={handleToggle}
-          hasSelection={!!selected}
         >
           <SearchIcon />
           <SCSearchInput
@@ -61,7 +60,7 @@ export const SelectorSimple = ({
             onChange={handleSearchChange}
             onKeyDown={handleKeyDown}
             onClick={(e) => e.stopPropagation()}
-            placeholder={String(selected) || selectedPokemon.charAt(0).toUpperCase() + selectedPokemon.slice(1) || "Buscar pokemon"}
+            placeholder={String(selected) || (selectedPokemon ? selectedPokemon.charAt(0).toUpperCase() + selectedPokemon.slice(1) : "Buscar pokemon")}
           />
           <SCArrowButton $isCollapsed={isOpen}>
             <DropDownArrowIcon />
@@ -69,7 +68,7 @@ export const SelectorSimple = ({
         </SCSelectorWrapper>
         <SCSearchWrapper>
           <SCSearchButton onClick={() => onSearch?.(searchValue)}>
-            Buscar
+            {labels.search}
           </SCSearchButton>
         </SCSearchWrapper>
       </SCSelectorAndButtonWrapper>

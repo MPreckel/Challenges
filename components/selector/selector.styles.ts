@@ -20,7 +20,7 @@ export const SCSelectorAndButtonWrapper = styled.div`
   display: flex;
   gap: 10px;
 `;
-export const SCSelectorWrapper = styled.button<{ isOpen: boolean; hasSelection?: boolean }>`
+export const SCSelectorWrapper = styled.button<{ $isOpen: boolean}>`
   padding: 12px;
   gap: 8px;
   border: 1px solid #ddd;
@@ -42,7 +42,7 @@ export const SCSelectorWrapper = styled.button<{ isOpen: boolean; hasSelection?:
     box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
   }
 
-  ${props => props.isOpen && `
+  ${props => props.$isOpen && `
     border-color: #0070f3;
     box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.1);
   `}

@@ -32,7 +32,7 @@ const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
    <SCSelectorContainer ref={containerRef}>
          <SCSelectorAndButtonWrapper>
            <SCSelectorWrapper
-             isOpen={isOpen}
+             $isOpen={isOpen}
              onClick={handleToggle}
            >
              <SearchIcon />
@@ -51,7 +51,7 @@ const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
            </SCSelectorWrapper>
            <SCSearchWrapper>
              <SCSearchButton onClick={() => onSearch?.(searchValue)}>
-               Buscar
+                {labels.search}
              </SCSearchButton>
            </SCSearchWrapper>
          </SCSelectorAndButtonWrapper>

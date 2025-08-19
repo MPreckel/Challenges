@@ -1,5 +1,6 @@
 export const labels = {
     loading: 'Cargando...',
+    search: 'Buscar',
 };
 
 export const messages = {
