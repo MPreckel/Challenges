@@ -16,10 +16,10 @@ export const SelectorMultiple: FC<MultipleSelectorProps> = ({
   isLoading, 
   onSelect, 
   hasMore,
-  label,
   onSearch,
+  detailedPokemon,
 }) => {
-const { isOpen, selectedValues, containerRef, handleToggle, handleSelect, inputRef, searchValue, handleSearchChange } = useSelectMultiple({ onSelect });
+const { isOpen, selectedValues, containerRef, handleToggle, handleSelect, inputRef, searchValue, handleSearchChange, handleDelete } = useSelectMultiple({ onSelect, detailedPokemon });
 const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
   if (e.key === "Enter") {
     e.preventDefault();
@@ -61,7 +61,7 @@ const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
                <SCSelectorOption>{labels.loading}</SCSelectorOption>
              )}
    
-             {data.map((option) => (
+             {data?.map((option) => (
                <SCSelectorOption
                  key={option.value}
                  onClick={() => handleSelect(option)}
@@ -71,7 +71,7 @@ const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
                </SCSelectorOption>
              ))}
    
-             {isLoading && data.length > 0 && (
+             {isLoading && data.length && (
                <SCSelectorOption>
                  <SCWrapperSpinner>
                    <SpinnerComponent size="20px" />
@@ -79,11 +79,16 @@ const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
                </SCSelectorOption>
              )}
    
-             {hasMore && !isLoading && data.length > 0 && (
+             {hasMore && !isLoading && data.length && (
                <SCSelectorOption>{messages.scroll}</SCSelectorOption>
              )}
            </SCSelectorOptions>
          )}
+         <SCChipsWrapper>
+           { selectedValues && selectedValues?.map((value) => (
+             <Chip key={value} label={value || detailedPokemon?.name} onDelete={() => handleDelete(value)} />
+           ))}
+         </SCChipsWrapper>
        </SCSelectorContainer>
      );
    };

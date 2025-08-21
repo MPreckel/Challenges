@@ -1,24 +1,21 @@
-import { StyledChip, ChipIcon, ChipDelete } from './chip.styles';
-import { ChipProps } from './chip.interface';
-import { FC } from 'react';
-
-
+import { StyledChip, ChipDelete } from "./chip.styles";
+import { ChipProps } from "./chip.interface";
+import { FC } from "react";
 
 export const Chip: FC<ChipProps> = ({
   label,
-  variant = 'filled',
-  size = 'medium',
-  color = 'primary',
-  icon,
-  onDelete,
+  variant = "filled",
+  size = "medium",
+  color = "primary",
   onClick,
   className,
   style,
+  onDelete,
 }) => {
-  const handleDelete = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onDelete?.();
-  };
+const handleDelete = (e: React.MouseEvent) => {
+  e.stopPropagation();
+  onDelete?.();
+}
 
   return (
     <StyledChip
@@ -31,23 +28,21 @@ export const Chip: FC<ChipProps> = ({
       role="button"
       tabIndex={onClick ? 0 : -1}
       onKeyDown={(e) => {
-        if ((e.key === 'Enter' || e.key === ' ') && onClick) {
+        if ((e.key === "Enter" || e.key === " ") && onClick) {
           e.preventDefault();
           onClick();
         }
       }}
     >
-      {icon && <ChipIcon>{icon}</ChipIcon>}
       {label}
-      {onDelete && (
-        <ChipDelete 
-          onClick={handleDelete} 
-          aria-label={`Remove ${label}`}
-          type="button"
-        >
-          ×
-        </ChipDelete>
-      )}
+
+      <ChipDelete
+        onClick={handleDelete}
+        aria-label={`Remove ${label}`}
+        type="button"
+      >
+        ×
+      </ChipDelete>
     </StyledChip>
   );
 };

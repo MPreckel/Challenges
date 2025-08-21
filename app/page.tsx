@@ -1,8 +1,6 @@
 "use client";
 import { Card } from "@/components/card/Card";
 import { Selector } from "@/components/selector/Selector";
-import { useGetPokemons } from "@/pokemons/useGetPokemons";
-import { useCallback, useEffect, useRef, useState } from "react";
 import {
   SCCardAndImageWrapper,
   SCCardWrapper,
@@ -24,7 +22,9 @@ export default function Home() {
     hasMore,
     searchPokemon,
     selectedPokemon,
+    selectedPokemons,
     handlePokemonSelect,
+    handleMultipleSelect,
     lastPokemonElementRef,
   } = usePage();
 
@@ -52,17 +52,18 @@ export default function Home() {
         <SCSelector>
           <Selector
             type="multiple"
-            onSelect={handlePokemonSelect}
-            data={pokemonList.map((pokemon, index) => ({
-              value: pokemon.name,
-              label:
-                pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1),
-              ref:
-                index === pokemonList.length - 1 ? lastPokemonElementRef : null,
-            }))}
+            data={pokemonList
+              .filter(pokemon => !selectedPokemons.includes(pokemon.name))
+              .map((pokemon, index, filteredList) => ({
+                value: pokemon.name,
+                label: pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1),
+                ref: index === filteredList.length - 1 ? lastPokemonElementRef : null,
+              }))}
             isLoading={loading}
             hasMore={hasMore}
             onSearch={searchPokemon}
+            onSelect={handleMultipleSelect}
+            selectedValues={selectedPokemons}
           />
         </SCSelector>
       </SCSelectorsWrapper>

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Option } from "../selector.interface";
   
-export const useSelectMultiple = ({ onSelect }: { onSelect?: (values: string[]) => void }) => {
+export const useSelectMultiple = ({ onSelect, detailedPokemon }: { onSelect?: (values: string[]) => void, detailedPokemon?: PokemonDetails }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
   const [searchValue, setSearchValue] = useState('');
@@ -27,24 +27,33 @@ export const useSelectMultiple = ({ onSelect }: { onSelect?: (values: string[]) 
     }, []);
   
     const handleSelect = useCallback((option: Option) => {
-      setSelectedValues(option.label);
+      setSelectedValues((prevValues) => [...prevValues, option.label]);
       setSearchValue('');
-      setIsOpen(false);
       if (onSelect) {
-        onSelect(option.value as string);
+        onSelect(selectedValues);
       }
-    }, [onSelect]);
+    }, [onSelect, selectedValues]);
   
     const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
       setSearchValue(e.target.value);
     }, []);
   
+    const handleDelete = useCallback((name: string) => {
+      setSelectedValues((prevValues) => prevValues.filter((value) => value !== name));
+    }, []);
+    
     useEffect(() => {
       document.addEventListener('mousedown', handleClickOutside);
       return () => {
         document.removeEventListener('mousedown', handleClickOutside);
       };
     }, [handleClickOutside]);
+
+    useEffect(() => {
+      if (detailedPokemon) {
+        setSelectedValues((prevValues) => [...prevValues, detailedPokemon.name]);
+      }
+    }, [detailedPokemon]);
   
     return {
       isOpen,
@@ -56,5 +65,6 @@ export const useSelectMultiple = ({ onSelect }: { onSelect?: (values: string[]) 
       handleSelect,
       handleSearchChange,
       setSearchValue,
+      handleDelete,
     };
 };

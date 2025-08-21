@@ -13,7 +13,8 @@ export const usePage = () => {
        searchPokemon,
      } = useGetPokemons();
      const [selectedPokemon, setSelectedPokemon] = useState<string | null>(null);
-     const observer = useRef<IntersectionObserver>(null);
+  const [selectedPokemons, setSelectedPokemons] = useState<string[]>([]);
+  const observer = useRef<IntersectionObserver>(null);
    
      const lastPokemonElementRef = useCallback(
        (node: HTMLElement | null) => {
@@ -42,7 +43,7 @@ export const usePage = () => {
          setSelectedPokemon(savedPokemon);
          getPokemonDetails(savedPokemon);
        }
-     }, []);
+     }, [getPokemonDetails]);
    
      // Guardar el Pokémon detallado cuando cambie
      useEffect(() => {
@@ -56,7 +57,11 @@ export const usePage = () => {
      const handlePokemonSelect = (value: string) => {
        setSelectedPokemon(value);
        getPokemonDetails(value);
-     }; 
+     };
+
+     const handleMultipleSelect = (values: string[]) => {
+       setSelectedPokemons(values);
+     };
 
      return {
        pokemonList,
@@ -65,7 +70,9 @@ export const usePage = () => {
        hasMore,
        searchPokemon,
        selectedPokemon,
+       selectedPokemons,
        handlePokemonSelect,
+       handleMultipleSelect,
        lastPokemonElementRef,
      };
 };

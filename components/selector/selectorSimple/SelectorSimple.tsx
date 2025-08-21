@@ -60,7 +60,7 @@ export const SelectorSimple = ({
             onChange={handleSearchChange}
             onKeyDown={handleKeyDown}
             onClick={(e) => e.stopPropagation()}
-            placeholder={String(selected) || (selectedPokemon ? selectedPokemon.charAt(0).toUpperCase() + selectedPokemon.slice(1) : "Buscar pokemon")}
+            placeholder={String(selected) || (selectedPokemon ? selectedPokemon : "Buscar pokemon")}
           />
           <SCArrowButton $isCollapsed={isOpen}>
             <DropDownArrowIcon />

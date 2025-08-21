@@ -73,18 +73,6 @@ export const StyledChip = styled.div<StyledChipProps>`
   }}
 `;
 
-export const ChipIcon = styled.div`
-  display: inline-flex;
-  align-items: center;
-  margin-right: 0.5rem;
-  
-  svg {
-    width: 1em;
-    height: 1em;
-    font-size: 1.25em;
-  }
-`;
-
 export const ChipDelete = styled.button`
   display: inline-flex;
   align-items: center;
