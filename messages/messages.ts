@@ -2,6 +2,9 @@ export const labels = {
     loading: 'Cargando...',
     search: 'Buscar',
     pokemon: 'Pokemon',
+    login: 'Iniciar sesión',
+    email: 'Email',
+    password: 'Contraseña',
 };
 
 export const messages = {
