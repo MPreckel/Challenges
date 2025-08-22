@@ -6,7 +6,7 @@ import { AuthContextType, AuthProviderProps, User, UserCredentials } from './Aut
 
 
 // Creamos el contexto con un valor por defecto
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType >({} as AuthContextType);
 
 // Hook personalizado para usar el contexto
 export function useAuth() {

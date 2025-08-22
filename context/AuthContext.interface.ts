@@ -8,7 +8,7 @@ export type User = {
 export type AuthContextType = {
   user: User | null;
   login: (email: string, password: string) => Promise<boolean>;
-  logout: () => Promise<void>;  // Ahora es asíncrono
+  logout: () => Promise<void>;
   isLoading: boolean;
   error: string | null;
 };
