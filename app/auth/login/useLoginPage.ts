@@ -1,13 +1,20 @@
 
 
 import { useAuth } from "@/context/AuthContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormData, UseLoginPage } from "./login.interface";
 import { useRouter } from "next/navigation";
 
 export const useLoginPage = (): UseLoginPage => {    
-const router = useRouter();
-  const { login, isLoading, error: authError } = useAuth();
+  const router = useRouter();
+  const { login, isLoading, error: authError, user } = useAuth();
+  
+  // Redirigir si el usuario ya está autenticado
+  useEffect(() => {
+    if (user) {
+      router.push('/');
+    }
+  }, [user, router]);
   
   // Estado para manejar los datos del formulario
   const [formData, setFormData] = useState<FormData>({

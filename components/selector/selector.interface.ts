@@ -25,6 +25,7 @@ export interface MultipleSelectorProps extends BaseSelectorProps {
   value?: string[];
   onSelect?: (value: string[]) => void;
   onSearch?: ((value: string) => void) | undefined;
+  detailedPokemon?: string[] | null;
 }
 
 export type SelectorProps = SingleSelectorProps | MultipleSelectorProps;
