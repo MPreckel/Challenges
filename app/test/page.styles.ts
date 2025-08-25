@@ -59,3 +59,18 @@ export const SCType = styled.div<{ type: PokemonType }>`
   background-color: ${({ type }) => typeColors[type] || '#777'};
   border: 1px solid ${({ type }) => typeColors[type] ? `${typeColors[type]}99` : '#999'};
 `;
+
+export const SCButton = styled.button`
+  padding: 8px 16px;
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
+  

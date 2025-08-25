@@ -2,6 +2,7 @@
 import { Card } from "@/components/card/Card";
 import { Selector } from "@/components/selector/Selector";
 import {
+  SCButton,
   SCCardAndImageWrapper,
   SCCardWrapper,
   SCMainWrapper,
@@ -13,6 +14,7 @@ import {
 import Image from "next/image";
 import { PokemonType } from "@/pokemons/pokemonTypes";
 import { usePage } from "./usePage";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Home() {
   const {
@@ -28,6 +30,9 @@ export default function Home() {
     lastPokemonElementRef,
   } = usePage();
 
+  const { logout } = useAuth();
+  
+ 
   return (
     <SCMainWrapper>
       <SCSelectorsWrapper>
@@ -49,7 +54,7 @@ export default function Home() {
             selectedPokemon={selectedPokemon}
           />
         </SCSelector>
-        <SCSelector>
+        {/* <SCSelector>
           <Selector
             type="multiple"
             data={pokemonList
@@ -65,7 +70,7 @@ export default function Home() {
             onSelect={handleMultipleSelect}
             selectedValues={selectedPokemons}
           />
-        </SCSelector>
+        </SCSelector> */}
       </SCSelectorsWrapper>
       <SCCardAndImageWrapper>
         <SCCardWrapper>
@@ -102,6 +107,11 @@ export default function Home() {
           height={700}
         />
       </SCCardAndImageWrapper>
+      <SCButton
+        onClick={logout}
+      >
+        Cerrar sesión
+      </SCButton>
     </SCMainWrapper>
   );
 }

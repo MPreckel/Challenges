@@ -96,7 +96,7 @@ export function useGetPokemons() {
     if (nextUrl && !loading && hasMore) {
       getPokemons(nextUrl);
     }
-  }, [nextUrl, loading, hasMore, getPokemons]);
+  }, [nextUrl, loading, hasMore]);
 
   const searchPokemon = async (searchValue: string) => {
     try {

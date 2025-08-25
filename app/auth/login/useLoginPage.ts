@@ -10,22 +10,17 @@ export const useLoginPage = (): UseLoginPage => {
   const { login, isLoading, error: authError, user } = useAuth();
   
   // Redirigir si el usuario ya está autenticado
-  useEffect(() => {
-    if (user) {
-      router.push('/');
-    }
-  }, [user, router]);
   
   // Estado para manejar los datos del formulario
   const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
   });
-
+  
   // Estado para manejar errores
   const [errors, setFormErrors] = useState<Partial<FormData>>({});
   const [formError, setFormError] = useState<string | null>(null);
-
+  
   // Manejador de cambios en los inputs
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -41,12 +36,12 @@ export const useLoginPage = (): UseLoginPage => {
       }));
     }
   };
-
+  
   // Función para validar el formulario
   const validateForm = (): boolean => {
     const newErrors: Partial<FormData> = {};
     let isValid = true;
-
+    
     if (!formData.email) {
       newErrors.email = "El email es requerido";
       isValid = false;
@@ -54,7 +49,7 @@ export const useLoginPage = (): UseLoginPage => {
       newErrors.email = "El email no es válido";
       isValid = false;
     }
-
+    
     if (!formData.password) {
       newErrors.password = "La contraseña es requerida";
       isValid = false;
@@ -62,26 +57,25 @@ export const useLoginPage = (): UseLoginPage => {
       newErrors.password = "La contraseña debe tener al menos 6 caracteres";
       isValid = false;
     }
-
+    
     setFormErrors(newErrors);
     return isValid;
   };
-
+  
   // Manejador del envío del formulario
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
       setFormError(null);
-      const success = await login(formData.email, formData.password);
-      
-      if (success) {
-        router.push('/dashboard');
-      } else {
-        setFormError('Credenciales inválidas. Por favor, inténtalo de nuevo.');
-      }
+      await login(formData.email, formData.password);
     }
   };
-
+  useEffect(() => {
+    if (user) {
+      router.push('/');
+    }
+  }, [user]);
+  
   return {
     formData,
     errors,
