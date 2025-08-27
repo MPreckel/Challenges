@@ -12,16 +12,30 @@ interface PokemonResponse {
   results: PokemonBasicInfo[];
 }
 
-interface PokemonDetails {
+export interface PokemonDetails {
   id: number;
   name: string;
   height: number;
   weight: number;
   sprites: {
     front_default: string;
+    other?: {
+      dream_world: {
+        front_default: string;
+      };
+      showdown: {
+        front_default: string;
+      };
+    };
   };
   types: Array<{
     type: {
+      name: string;
+    };
+  }>;
+  stats: Array<{
+    base_stat: number;
+    stat: {
       name: string;
     };
   }>;
@@ -96,7 +110,7 @@ export function useGetPokemons() {
     if (nextUrl && !loading && hasMore) {
       getPokemons(nextUrl);
     }
-  }, [nextUrl, loading, hasMore, getPokemons]);
+  }, [nextUrl, loading, hasMore]);
 
   const searchPokemon = async (searchValue: string) => {
     try {

@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Option } from "../selector.interface";
+import { PokemonDetails } from "@/pokemons/useGetPokemons";
   
-export const useSelectMultiple = ({ onSelect, detailedPokemon }: { onSelect?: (values: string[]) => void, detailedPokemon?: PokemonDetails }) => {
+export const useSelectMultiple = ({ onSelect, detailedPokemon }: { onSelect?: (values: string[]) => void, detailedPokemon?: PokemonDetails | null }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
   const [searchValue, setSearchValue] = useState('');

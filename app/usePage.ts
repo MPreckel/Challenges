@@ -32,37 +32,37 @@ export const usePage = () => {
        [loading, hasMore, loadMorePokemons]
      );
    
-     useEffect(() => {
-       getPokemons();
-     }, [getPokemons]);
-   
-     // Restaurar el Pokémon guardado al montar
-     useEffect(() => {
-       const savedPokemon = localStorage.getItem("selectedPokemon");
-       if (savedPokemon) {
-         setSelectedPokemon(savedPokemon);
-         getPokemonDetails(savedPokemon);
-       }
-     }, [getPokemonDetails]);
-   
+     
      // Guardar el Pokémon detallado cuando cambie
-     useEffect(() => {
-       if (!window) return;
-       const name = detailedPokemon?.name;
-       if (name) {
-         localStorage.setItem("selectedPokemon", name);
-       }
-     }, [detailedPokemon?.name]);
-   
+     
      const handlePokemonSelect = (value: string) => {
        setSelectedPokemon(value);
        getPokemonDetails(value);
-     };
-
-     const handleMultipleSelect = (values: string[]) => {
-       setSelectedPokemons(values);
-     };
-
+      };
+      
+      const handleMultipleSelect = (values: string[]) => {
+        setSelectedPokemons(values);
+      };
+      
+      useEffect(() => {
+        if (!window) return;
+        const name = detailedPokemon?.name;
+        if (name) {
+          localStorage.setItem("selectedPokemon", name);
+        }
+      }, [detailedPokemon?.name]);
+      useEffect(() => {
+        getPokemons();
+      }, [getPokemons]);
+    
+      // Restaurar el Pokémon guardado al montar
+      useEffect(() => {
+        const savedPokemon = localStorage.getItem("selectedPokemon");
+        if (savedPokemon) {
+          setSelectedPokemon(savedPokemon);
+          getPokemonDetails(savedPokemon);
+        }
+      }, []);
      return {
        pokemonList,
        detailedPokemon,

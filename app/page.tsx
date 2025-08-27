@@ -1,7 +1,9 @@
 "use client";
+import { useState } from 'react';
 import { Card } from "@/components/card/Card";
 import { Selector } from "@/components/selector/Selector";
 import {
+  SCButton,
   SCCardAndImageWrapper,
   SCCardWrapper,
   SCMainWrapper,
@@ -13,6 +15,8 @@ import {
 import Image from "next/image";
 import { PokemonType } from "@/pokemons/pokemonTypes";
 import { usePage } from "./usePage";
+import { useAuth } from "@/context/AuthContext";
+import PokemonModal from '@/components/modal/PokemonModal';
 
 export default function Home() {
   const {
@@ -28,10 +32,14 @@ export default function Home() {
     lastPokemonElementRef,
   } = usePage();
 
+    const { logout } = useAuth();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
+ 
   return (
-    <SCMainWrapper>
-      <SCSelectorsWrapper>
-        <SCSelector>
+    <SCMainWrapper className="container">
+      <SCSelectorsWrapper className="d-flex justify-content-center align-items-center w-100">
+        <SCSelector className="col-5">
           <Selector
             type="simple"
             onSelect={handlePokemonSelect}
@@ -39,7 +47,7 @@ export default function Home() {
               value: pokemon.name,
               label:
                 pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1) ||
-                detailedPokemon?.name,
+                detailedPokemon?.name || '',
               ref:
                 index === pokemonList.length - 1 ? lastPokemonElementRef : null,
             }))}
@@ -49,7 +57,7 @@ export default function Home() {
             selectedPokemon={selectedPokemon}
           />
         </SCSelector>
-        <SCSelector>
+        <SCSelector className="col-12">
           <Selector
             type="multiple"
             data={pokemonList
@@ -63,15 +71,16 @@ export default function Home() {
             hasMore={hasMore}
             onSearch={searchPokemon}
             onSelect={handleMultipleSelect}
-            selectedValues={selectedPokemons}
+            value={selectedPokemons}
           />
         </SCSelector>
       </SCSelectorsWrapper>
-      <SCCardAndImageWrapper>
+      <SCCardAndImageWrapper className="d-flex flex-column align-items-center">
         <SCCardWrapper>
           <Card
-            imageUrl={detailedPokemon?.sprites?.front_default || null}
+            imageUrl={detailedPokemon?.sprites?.other?.dream_world.front_default || detailedPokemon?.sprites?.front_default || null}
             pokemonName={selectedPokemon || detailedPokemon?.name || null}
+            onImageClick={() => setIsModalOpen(true)}
           />
         </SCCardWrapper>
         {detailedPokemon &&
@@ -102,6 +111,16 @@ export default function Home() {
           height={700}
         />
       </SCCardAndImageWrapper>
+      <SCButton
+        onClick={logout}
+      >
+        Cerrar sesión
+      </SCButton>
+      <PokemonModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        pokemon={detailedPokemon}
+      />
     </SCMainWrapper>
   );
 }
