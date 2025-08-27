@@ -1,4 +1,5 @@
 "use client";
+import { useState } from 'react';
 import { Card } from "@/components/card/Card";
 import { Selector } from "@/components/selector/Selector";
 import {
@@ -15,6 +16,7 @@ import Image from "next/image";
 import { PokemonType } from "@/pokemons/pokemonTypes";
 import { usePage } from "./usePage";
 import { useAuth } from "@/context/AuthContext";
+import PokemonModal from '@/components/modal/PokemonModal';
 
 export default function Home() {
   const {
@@ -30,13 +32,14 @@ export default function Home() {
     lastPokemonElementRef,
   } = usePage();
 
-  const { logout } = useAuth();
+    const { logout } = useAuth();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
  
   return (
-    <SCMainWrapper>
-      <SCSelectorsWrapper>
-        <SCSelector>
+    <SCMainWrapper className="container">
+      <SCSelectorsWrapper className="d-flex justify-content-center align-items-center w-100">
+        <SCSelector className="col-5">
           <Selector
             type="simple"
             onSelect={handlePokemonSelect}
@@ -54,7 +57,7 @@ export default function Home() {
             selectedPokemon={selectedPokemon}
           />
         </SCSelector>
-        {/* <SCSelector>
+        <SCSelector className="col-12">
           <Selector
             type="multiple"
             data={pokemonList
@@ -70,13 +73,14 @@ export default function Home() {
             onSelect={handleMultipleSelect}
             selectedValues={selectedPokemons}
           />
-        </SCSelector> */}
+        </SCSelector>
       </SCSelectorsWrapper>
-      <SCCardAndImageWrapper>
+      <SCCardAndImageWrapper className="d-flex flex-column align-items-center">
         <SCCardWrapper>
           <Card
-            imageUrl={detailedPokemon?.sprites?.front_default || null}
+            imageUrl={detailedPokemon?.sprites?.other?.dream_world.front_default || detailedPokemon?.sprites?.front_default || null}
             pokemonName={selectedPokemon || detailedPokemon?.name || null}
+            onImageClick={() => setIsModalOpen(true)}
           />
         </SCCardWrapper>
         {detailedPokemon &&
@@ -112,6 +116,11 @@ export default function Home() {
       >
         Cerrar sesión
       </SCButton>
+      <PokemonModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        pokemon={detailedPokemon}
+      />
     </SCMainWrapper>
   );
 }

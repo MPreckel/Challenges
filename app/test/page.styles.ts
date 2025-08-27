@@ -20,7 +20,7 @@ export const SCSelector = styled.div`
 
 export const SCCardWrapper = styled.div`
   position: absolute;
-  top: 198px;
+  top: 192px;
   left: 424px;
   transform: translate(-50%, -50%);
   padding: 16px;
@@ -38,22 +38,19 @@ export const SCTypesWrapper = styled.div<SCTypesWrapperProps>`
   display: flex;
   position: absolute;
   top: 504px;
-  left: ${props => props.$singleType ? '386px' : '330px'};
+  left: ${props => props.$singleType ? '386px' : '340px'};
   gap: 8px;
-  margin-top: 8px;
-  justify-content: center;
 `;
 
 export const SCType = styled.div<{ type: PokemonType }>`
   display: flex;
-  padding: 6px;
-  border-radius: 50px;
-  height: 24px;
-  min-width: 80px;
+  height: 40px;
   justify-content: center;
   align-items: center;
+  border-radius: 50px;
+  min-width: 80px;
   color: white;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 500;
   text-transform: capitalize;
   background-color: ${({ type }) => typeColors[type] || '#777'};

@@ -37,7 +37,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setIsLoading(false);
       }
     };
-
+console.log('process.env.ADMIN_EMAIL', process.env.ADMIN_EMAIL);
     checkAuth();
   }, []);
 
@@ -68,19 +68,36 @@ export function AuthProvider({ children }: AuthProviderProps) {
       await new Promise((resolve) => setTimeout(resolve, 500));
 
       // 4. Buscar el usuario en la lista de usuarios de prueba
+      const users = [];
+      const user1 = {
+        email: process.env.ADMIN_EMAIL,
+        password: process.env.ADMIN_PASSWORD,
+      };
+      const user2 = {
+        email: process.env.USER_EMAIL,
+        password: process.env.USER_PASSWORD,
+      };
+      const user3 = {
+        email: process.env.GUEST_EMAIL,
+        password: process.env.GUEST_PASSWORD,
+      };
+      users.push(user1, user2, user3);
       const user = mockUsers.find(
         (user) => user.email === email && user.password === password
       );
-
+    
       if (!user) {
         throw new Error("Email o contraseña incorrectos");
-      }
+      } else {
+        // 5. Si todo es correcto, guardar el usuario
+        const userData: User = { email: String(user.email) };
+        if (user && user.email) {
+          setUser(userData);
+          localStorage.setItem("user", JSON.stringify(user?.email));
+        }
 
-      // 5. Si todo es correcto, guardar el usuario
-      const userData = { email: user.email };
-      setUser(userData);
-      localStorage.setItem("user", JSON.stringify(userData));
-      return true;
+        return true;
+      }
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Error al iniciar sesión";

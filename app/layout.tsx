@@ -1,4 +1,5 @@
 'use client';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { AuthProvider } from "@/context/AuthContext";
 import { usePathname } from 'next/navigation';

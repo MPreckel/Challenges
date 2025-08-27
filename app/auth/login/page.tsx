@@ -86,7 +86,6 @@ export default function LoginPage() {
               <SCErrorPassword>{errors.password}</SCErrorPassword>
             )}
         </SCInputsWrapper>
-
         <SCButtonWrapper>
           <SCButton type="submit" disabled={isLoading}>
             {isLoading ? 'Iniciando sesión...' : 'Iniciar sesión'}
