@@ -12,7 +12,7 @@ interface PokemonResponse {
   results: PokemonBasicInfo[];
 }
 
-interface PokemonDetails {
+export interface PokemonDetails {
   id: number;
   name: string;
   height: number;
@@ -23,10 +23,19 @@ interface PokemonDetails {
       dream_world: {
         front_default: string;
       };
+      showdown: {
+        front_default: string;
+      };
     };
   };
   types: Array<{
     type: {
+      name: string;
+    };
+  }>;
+  stats: Array<{
+    base_stat: number;
+    stat: {
       name: string;
     };
   }>;

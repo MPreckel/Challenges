@@ -47,7 +47,7 @@ export default function Home() {
               value: pokemon.name,
               label:
                 pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1) ||
-                detailedPokemon?.name,
+                detailedPokemon?.name || '',
               ref:
                 index === pokemonList.length - 1 ? lastPokemonElementRef : null,
             }))}
@@ -71,7 +71,7 @@ export default function Home() {
             hasMore={hasMore}
             onSearch={searchPokemon}
             onSelect={handleMultipleSelect}
-            selectedValues={selectedPokemons}
+            value={selectedPokemons}
           />
         </SCSelector>
       </SCSelectorsWrapper>

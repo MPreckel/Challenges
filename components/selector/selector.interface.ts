@@ -1,8 +1,11 @@
+import { PokemonDetails } from "@/pokemons/useGetPokemons";
+
 export interface Option<T extends HTMLElement = HTMLDivElement> {
+
   value: string | number;
   label: string;
   id?: number;
-  ref?: React.RefObject<T> | null;
+  ref?: React.RefObject<T> | React.RefCallback<T> | null;
 }
 
 export interface BaseSelectorProps {
@@ -25,7 +28,7 @@ export interface MultipleSelectorProps extends BaseSelectorProps {
   value?: string[];
   onSelect?: (value: string[]) => void;
   onSearch?: ((value: string) => void) | undefined;
-  detailedPokemon?: string[] | null;
+  detailedPokemon?: PokemonDetails | null;
 }
 
 export type SelectorProps = SingleSelectorProps | MultipleSelectorProps;

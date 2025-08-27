@@ -106,7 +106,7 @@ export const SelectorMultiple: FC<MultipleSelectorProps> = ({
           {selectedValues?.map((value) => (
             <Chip
               key={value}
-              label={value || detailedPokemon?.name}
+              label={value}
               onDelete={() => handleDelete(value)}
             />
           ))}
