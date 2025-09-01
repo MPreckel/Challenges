@@ -1,45 +1,46 @@
 import { PokemonType, typeColors } from "@/pokemons/pokemonTypes";
 import styled from "styled-components";
 
-export const SCMainWrapper = styled.div`
+export const SCBannerRow = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.5rem;
+  background-color: #F8F8F8;
 `;
 
 export const SCSelectorsWrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 16px;
-`;
-
-export const SCSelector = styled.div`
-  max-width: 200px;
+  gap: 20rem;
+  background-color: #F8F8F8;
 `;
 
 export const SCCardWrapper = styled.div`
   position: absolute;
-  top: 192px;
-  left: 424px;
-  transform: translate(-50%, -50%);
-  padding: 16px;
+  width: fit-content;
+  top: 92px;
+  left: 630px;
+  z-index: 2;
 `;
 
 export const SCCardAndImageWrapper = styled.div`
   position: relative;
+  flex-direction: column;
+  align-items: center;
+  background-color: #F8F8F8;
+`;
+export const SCImageWrapper = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
-interface SCTypesWrapperProps {
-  $singleType?: boolean;
-}
-
-export const SCTypesWrapper = styled.div<SCTypesWrapperProps>`
+export const SCTypesWrapper = styled.div<{ $singleType?: boolean }>`
   display: flex;
   position: absolute;
-  top: 504px;
-  left: ${props => props.$singleType ? '386px' : '340px'};
+  bottom: 148px;
+  left: ${({ $singleType }) => ($singleType ? "680px" : "635px")};
+  width: fit-content;
   gap: 8px;
+  z-index: 3;
 `;
 
 export const SCType = styled.div<{ type: PokemonType }>`
@@ -53,8 +54,9 @@ export const SCType = styled.div<{ type: PokemonType }>`
   font-size: 16px;
   font-weight: 500;
   text-transform: capitalize;
-  background-color: ${({ type }) => typeColors[type] || '#777'};
-  border: 1px solid ${({ type }) => typeColors[type] ? `${typeColors[type]}99` : '#999'};
+  background-color: ${({ type }) => typeColors[type] || "#777"};
+  border: 1px solid
+    ${({ type }) => (typeColors[type] ? `${typeColors[type]}99` : "#999")};
 `;
 
 export const SCButton = styled.button`
@@ -70,4 +72,14 @@ export const SCButton = styled.button`
     background-color: #0056b3;
   }
 `;
-  
+
+export const SCUserNameAndButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+`;

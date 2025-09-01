@@ -60,17 +60,20 @@ export const SCSelectorOptions = styled.div`
   overflow-y: auto;
 `;
 
-export const SCSelectorOption = styled.div`
+export const SCSelectorOption = styled.div<{ $isSelected?: boolean }>`
   padding: 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 8px;
   min-width: 180px;
+  background-color: ${props => props.$isSelected ? '#f0f7ff' : 'transparent'};
+  color: ${props => props.$isSelected ? '#0066cc' : 'inherit'};
+  font-weight: ${props => props.$isSelected ? '600' : 'normal'};
 
   &:hover {
-    background-color: #f5f5f5;
+    background-color: ${props => props.$isSelected ? '#e0f0ff' : '#f5f5f5'};
   }
 `;
 
@@ -86,19 +89,22 @@ export const SCArrowButton = styled.div<{ $isCollapsed: boolean }>`
 `;
 
 export const SCChipsWrapper = styled.div`
+ width: 250px;
+  height: 300px;
   position: absolute;
-  display: flex;
   top: 60px;
+  left: 10px;
+  display: flex;
   flex-wrap: wrap;
-  gap: 16px;
-  padding: 8px;
-  background: white;
-  max-height: 200px;
+  gap: 8px;
+  background: transparent;
   overflow-y: auto;
-  min-height: 40px;
   z-index: 999;
+  border-radius: 8px;
+  border: 1px solid #000;
+  padding: 8px;
+  align-content: flex-start;
 `;
-
 export const SCSearchWrapper = styled.div`
   display: flex;
   align-items: center;

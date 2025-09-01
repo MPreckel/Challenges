@@ -28,12 +28,20 @@ export const useSelectMultiple = ({ onSelect, detailedPokemon }: { onSelect?: (v
     }, []);
   
     const handleSelect = useCallback((option: Option) => {
-      setSelectedValues((prevValues) => [...prevValues, option.label]);
+      setSelectedValues((prevValues) => {
+        // Si ya está seleccionado, lo quitamos
+        if (prevValues.includes(option.label)) {
+          const newValues = prevValues.filter(value => value !== option.label);
+          onSelect?.(newValues);
+          return newValues;
+        }
+        // Si no está seleccionado, lo agregamos
+        const newValues = [...prevValues, option.label];
+        onSelect?.(newValues);
+        return newValues;
+      });
       setSearchValue('');
-      if (onSelect) {
-        onSelect(selectedValues);
-      }
-    }, [onSelect, selectedValues]);
+    }, [onSelect]);
   
     const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
       setSearchValue(e.target.value);
@@ -52,7 +60,12 @@ export const useSelectMultiple = ({ onSelect, detailedPokemon }: { onSelect?: (v
 
     useEffect(() => {
       if (detailedPokemon) {
-        setSelectedValues((prevValues) => [...prevValues, detailedPokemon.name]);
+        setSelectedValues(prevValues => {
+          // Solo actualizar si no está ya en la lista
+          return prevValues.includes(detailedPokemon.name) 
+            ? prevValues 
+            : [...prevValues, detailedPokemon.name];
+        });
       }
     }, [detailedPokemon]);
   

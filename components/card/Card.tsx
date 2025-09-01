@@ -10,8 +10,8 @@ export const Card: FC<CardProps> = ({ imageUrl, pokemonName, onImageClick }) => 
       <img 
         src={imageUrl} 
         alt={pokemonName ?? labels.pokemon}
-        width={165}
-        height={165} 
+        width={150}
+        height={150} 
         onClick={onImageClick}
       />
       ) : (

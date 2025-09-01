@@ -21,7 +21,8 @@ export const ModalContent = styled.div`
   padding: 20px;
   border-radius: 8px;
   max-width: 700px;
-  height: 700px;
+  height: 650px;
+  gap: 20px;
   width: 100%;
   position: relative;
 `;
@@ -41,8 +42,8 @@ export const SCImageWrapper = styled.div`
   align-items: center;
 `;
 export const PokemonImage = styled.img`
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
 `;
 export const SCPokemonName = styled.h2`
   text-align: center;
@@ -78,12 +79,13 @@ export const StatName = styled.span`
   align-items: center;
   justify-content: center;
   font-weight: bold;
+  font-size: 16px;
   min-width: 120px;
   color: #555;
 `;
 
 export const ProgressBarContainer = styled.div`
-  flex: 1;
+  width: 100%;
   height: 10px;
   background-color: #e0e0e0;
   border-radius: 5px;
@@ -98,8 +100,8 @@ export const ProgressBar = styled.div`
 `;
 
 export const CounterStat = styled.span`
-  font-weight: bold;
-  min-width: 30px;
+  font-weight: 700;
+  font-size: 16px;
   text-align: right;
   color: #333;
 `;
