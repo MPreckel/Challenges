@@ -42,8 +42,8 @@ export const SCImageWrapper = styled.div`
   align-items: center;
 `;
 export const PokemonImage = styled.img`
-  width: 200px;
-  height: 200px;
+  width: 210px;
+  height: 210px;
 `;
 export const SCPokemonName = styled.h2`
   text-align: center;

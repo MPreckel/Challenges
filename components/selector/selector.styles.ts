@@ -88,6 +88,15 @@ export const SCArrowButton = styled.div<{ $isCollapsed: boolean }>`
   );
 `;
 
+export const SCPlaceholder = styled.div`
+  color: #666;
+  font-style: italic;
+  padding: 8px 12px;
+  font-size: 14px;
+  width: 100%;
+  pointer-events: none;
+`;
+
 export const SCChipsWrapper = styled.div`
  width: 250px;
   height: 300px;

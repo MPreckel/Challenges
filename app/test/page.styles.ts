@@ -17,8 +17,8 @@ export const SCSelectorsWrapper = styled.div`
 export const SCCardWrapper = styled.div`
   position: absolute;
   width: fit-content;
-  top: 92px;
-  left: 630px;
+  top: 12%;
+  left: 47%;
   z-index: 2;
 `;
 
@@ -36,8 +36,8 @@ export const SCImageWrapper = styled.div`
 export const SCTypesWrapper = styled.div<{ $singleType?: boolean }>`
   display: flex;
   position: absolute;
-  bottom: 148px;
-  left: ${({ $singleType }) => ($singleType ? "680px" : "635px")};
+  bottom: 22%;
+  left: ${({ $singleType }) => ($singleType ? "51%" : "48%")};
   width: fit-content;
   gap: 8px;
   z-index: 3;
@@ -45,7 +45,7 @@ export const SCTypesWrapper = styled.div<{ $singleType?: boolean }>`
 
 export const SCType = styled.div<{ type: PokemonType }>`
   display: flex;
-  height: 40px;
+  height: 35px;
   justify-content: center;
   align-items: center;
   border-radius: 50px;

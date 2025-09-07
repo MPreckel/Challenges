@@ -11,6 +11,7 @@ import {
   SCSearchInput,
   SCSearchWrapper,
   SCSearchButton,
+  SCPlaceholder,
 } from "../selector.styles";
 import { FC } from "react";
 import { SCWrapperSpinner } from "@/components/spinner/spinner.styles";
@@ -103,15 +104,21 @@ export const SelectorMultiple: FC<MultipleSelectorProps> = ({
         </SCSelectorOptions>
       )}
       <SCChipsWrapper>
-        {selectedValues?.map((value) => (
-          <Chip
-            key={value}
-            onClick={() => onSearch?.(value)}
-            style={{ cursor: "pointer" }}
-            label={value}
-            onDelete={() => handleDelete(value)}
-          />
-        ))}
+        {selectedValues?.length === 0 ? (
+          <SCPlaceholder>
+            Selecciona tus pokemones
+          </SCPlaceholder>
+        ) : (
+          selectedValues?.map((value) => (
+            <Chip
+              key={value}
+              onClick={() => onSearch?.(value)}
+              style={{ cursor: "pointer" }}
+              label={value}
+              onDelete={() => handleDelete(value)}
+            />
+          ))
+        )}
       </SCChipsWrapper>
     </SCSelectorContainer>
   );

@@ -37,7 +37,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setIsLoading(false);
       }
     };
-console.log('process.env.ADMIN_EMAIL', process.env.ADMIN_EMAIL);
     checkAuth();
   }, []);
 
@@ -129,7 +128,8 @@ console.log('process.env.ADMIN_EMAIL', process.env.ADMIN_EMAIL);
       console.error("Error durante el cierre de sesión:", err);
       setError("Ocurrió un error al cerrar la sesión");
       throw err; // Re-lanzar el error para que el componente que llama pueda manejarlo si es necesario
-    } finally {
+    } 
+    finally {
       // 7. Asegurarse de desactivar el estado de carga
       setIsLoading(false);
     }
@@ -142,9 +142,28 @@ console.log('process.env.ADMIN_EMAIL', process.env.ADMIN_EMAIL);
     error,
   };
 
+  if (isLoading) {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        width: '100vw',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        backgroundColor: 'white',
+        zIndex: 1000
+      }}>
+        <div>Cargando...</div>
+      </div>
+    );
+  }
+
   return (
     <AuthContext.Provider value={value}>
-      {!isLoading ? children : <div>Cargando...</div>}
+      {children}
     </AuthContext.Provider>
   );
 }

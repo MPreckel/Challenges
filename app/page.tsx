@@ -37,71 +37,73 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <div className="container">
-      {/* Fila 1: Banner y usuario */}
-      <SCBannerRow className="row align-items-center justify-content-end">
-        <div className="col-6 d-flex justify-content-center">
-          <Image
-            src="/images/pokedexBanner.png"
-            alt="PokedexBanner"
-            width={400}
-            height={120}
-          />
-        </div>
-        <div className="col-3 d-flex justify-content-end wid">
-          <SCUserNameAndButtonWrapper>
-            {user?.name && <div>Hola {user.name}</div>}
-            <SCButton onClick={logout}>Cerrar sesión</SCButton>
-          </SCUserNameAndButtonWrapper>
-        </div>
-      </SCBannerRow>
+    <div className="container-fluid bg-light">
+      <div className="container">
+        {/* Fila 1: Banner y usuario */}
+        <SCBannerRow className="row align-items-center justify-content-end">
+          <div className="col-6 d-flex justify-content-center">
+            <Image
+              src="/images/pokedexBanner.png"
+              alt="PokedexBanner"
+              width={400}
+              height={120}
+            />
+          </div>
+          <div className="col-3 d-flex justify-content-end wid">
+            <SCUserNameAndButtonWrapper>
+              {user?.name && <div>Hola {user.name}</div>}
+              <SCButton onClick={logout}>Cerrar sesión</SCButton>
+            </SCUserNameAndButtonWrapper>
+          </div>
+        </SCBannerRow>
 
-      {/* Fila 2: Selectores */}
-      <SCSelectorsWrapper className="row">
-        <div className="col-2 justify-content-start">
-          <Selector
-            type="multiple"
-            data={pokemonList
-              .filter((pokemon) => !selectedPokemons.includes(pokemon.name))
-              .map((pokemon, index, filteredList) => ({
-                value: pokemon.name,
-                label:
-                  pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1),
-                ref:
-                  index === filteredList.length - 1
-                    ? lastPokemonElementRef
-                    : null,
-              }))}
-            isLoading={loading}
-            hasMore={hasMore}
-            onSearch={searchPokemon}
-            onSelect={handleMultipleSelect}
-            value={selectedPokemons}
-          />
-        </div>
+        {/* Fila 2: Selectores */}
+        <SCSelectorsWrapper className="row">
+          <div className="col-2 justify-content-start">
+            <Selector
+              type="multiple"
+              data={pokemonList
+                .filter((pokemon) => !selectedPokemons.includes(pokemon.name))
+                .map((pokemon, index, filteredList) => ({
+                  value: pokemon.name,
+                  label:
+                    pokemon.name.charAt(0).toUpperCase() +
+                    pokemon.name.slice(1),
+                  ref:
+                    index === filteredList.length - 1
+                      ? lastPokemonElementRef
+                      : null,
+                }))}
+              isLoading={loading}
+              hasMore={hasMore}
+              onSearch={searchPokemon}
+              onSelect={handleMultipleSelect}
+              value={selectedPokemons}
+            />
+          </div>
 
-        <div className="col-2 justify-content-center">
+          {/* <div className="col-2 justify-content-center">
           <Selector
-            type="simple"
-            onSelect={handlePokemonSelect}
-            data={pokemonList.map((pokemon, index) => ({
-              value: pokemon.name,
-              label:
-                pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1) ||
-                detailedPokemon?.name ||
-                "",
-              ref:
-                index === pokemonList.length - 1 ? lastPokemonElementRef : null,
+          type="simple"
+          onSelect={handlePokemonSelect}
+          data={pokemonList.map((pokemon, index) => ({
+            value: pokemon.name,
+            label:
+            pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1) ||
+            detailedPokemon?.name ||
+            "",
+            ref:
+            index === pokemonList.length - 1 ? lastPokemonElementRef : null,
             }))}
             isLoading={loading}
             hasMore={hasMore}
             onSearch={searchPokemon}
             selectedPokemon={selectedPokemon}
-          />
-        </div>
-      </SCSelectorsWrapper>
+            />
+            </div> */}
+        </SCSelectorsWrapper>
 
-      {/* Fila 4: Pokédex con tarjeta y tipos */}
+        {/* Fila 4: Pokédex con tarjeta y tipos */}
 
         <SCCardAndImageWrapper className="row">
           <SCImageWrapper>
@@ -111,8 +113,8 @@ export default function Home() {
               }}
               src="/pokedex.png"
               alt="Pokedex"
-              width={700}
-              height={700}
+              width={630}
+              height={630}
             />
           </SCImageWrapper>
           <SCCardWrapper>
@@ -146,12 +148,12 @@ export default function Home() {
             })()}
         </SCCardAndImageWrapper>
 
-
-      <PokemonModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        pokemon={detailedPokemon}
-      />
+        <PokemonModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          pokemon={detailedPokemon}
+        />
+      </div>
     </div>
   );
 }
