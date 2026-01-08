@@ -11,6 +11,7 @@ import {
   SCSearchInput,
   SCSearchWrapper,
   SCSearchButton,
+  SCPlaceholder,
 } from "../selector.styles";
 import { FC } from "react";
 import { SCWrapperSpinner } from "@/components/spinner/spinner.styles";
@@ -60,7 +61,7 @@ export const SelectorMultiple: FC<MultipleSelectorProps> = ({
             onChange={handleSearchChange}
             onKeyDown={handleKeyDown}
             onClick={(e) => e.stopPropagation()}
-            placeholder={String(selectedValues) || "Buscar pokemon"}
+            placeholder={"Selecciona tus pokemons"}
           />
           <SCArrowButton $isCollapsed={isOpen}>
             <DropDownArrowIcon />
@@ -83,8 +84,9 @@ export const SelectorMultiple: FC<MultipleSelectorProps> = ({
               key={option.value}
               onClick={() => handleSelect(option)}
               ref={option.ref || null}
+              $isSelected={selectedValues.includes(option.label)}
             >
-              {option.label}
+              {selectedValues.includes(option.label) && '✓ '}{option.label}
             </SCSelectorOption>
           ))}
 
@@ -101,17 +103,23 @@ export const SelectorMultiple: FC<MultipleSelectorProps> = ({
           )}
         </SCSelectorOptions>
       )}
-      {!!selectedValues?.length && (
-        <SCChipsWrapper>
-          {selectedValues?.map((value) => (
+      <SCChipsWrapper>
+        {selectedValues?.length === 0 ? (
+          <SCPlaceholder>
+            Selecciona tus pokemones
+          </SCPlaceholder>
+        ) : (
+          selectedValues?.map((value) => (
             <Chip
               key={value}
+              onClick={() => onSearch?.(value)}
+              style={{ cursor: "pointer" }}
               label={value}
               onDelete={() => handleDelete(value)}
             />
-          ))}
-        </SCChipsWrapper>
-      )}
+          ))
+        )}
+      </SCChipsWrapper>
     </SCSelectorContainer>
   );
 };

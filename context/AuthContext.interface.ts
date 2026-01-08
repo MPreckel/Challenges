@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 
 export type User = {
   email: string;
+  name: string;
   // Podemos agregar más campos según necesitemos
 };
 
@@ -20,4 +21,5 @@ export type AuthProviderProps = {
   export type UserCredentials = {
     email: string;
     password: string;
+    name: string;
   };

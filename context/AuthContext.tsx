@@ -37,15 +37,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setIsLoading(false);
       }
     };
-console.log('process.env.ADMIN_EMAIL', process.env.ADMIN_EMAIL);
     checkAuth();
   }, []);
 
   // Usuarios de prueba (en un caso real, esto vendría de una API o base de datos)
   const mockUsers: UserCredentials[] = [
-    { email: "usuario1@ejemplo.com", password: "password123" },
-    { email: "usuario2@ejemplo.com", password: "segura456" },
-    { email: "usuario3@ejemplo.com", password: "clave789" },
+    { email: "usuario1@ejemplo.com", password: "password123", name: "Manuel" },
+    { email: "usuario2@ejemplo.com", password: "segura456", name: "Pedro" },
+    { email: "usuario3@ejemplo.com", password: "clave789", name: "Juan" },
   ];
 
   const login = async (email: string, password: string): Promise<boolean> => {
@@ -90,10 +89,10 @@ console.log('process.env.ADMIN_EMAIL', process.env.ADMIN_EMAIL);
         throw new Error("Email o contraseña incorrectos");
       } else {
         // 5. Si todo es correcto, guardar el usuario
-        const userData: User = { email: String(user.email) };
-        if (user && user.email) {
+        const userData: User = { email: String(user.email), name: String(user.name) };
+        if (user && user.email && user.name) {
           setUser(userData);
-          localStorage.setItem("user", JSON.stringify(user?.email));
+          localStorage.setItem("user", JSON.stringify(userData));
         }
 
         return true;
@@ -129,7 +128,8 @@ console.log('process.env.ADMIN_EMAIL', process.env.ADMIN_EMAIL);
       console.error("Error durante el cierre de sesión:", err);
       setError("Ocurrió un error al cerrar la sesión");
       throw err; // Re-lanzar el error para que el componente que llama pueda manejarlo si es necesario
-    } finally {
+    } 
+    finally {
       // 7. Asegurarse de desactivar el estado de carga
       setIsLoading(false);
     }
@@ -142,9 +142,28 @@ console.log('process.env.ADMIN_EMAIL', process.env.ADMIN_EMAIL);
     error,
   };
 
+  if (isLoading) {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        width: '100vw',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        backgroundColor: 'white',
+        zIndex: 1000
+      }}>
+        <div>Cargando...</div>
+      </div>
+    );
+  }
+
   return (
     <AuthContext.Provider value={value}>
-      {!isLoading ? children : <div>Cargando...</div>}
+      {children}
     </AuthContext.Provider>
   );
 }
